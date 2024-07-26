@@ -39,7 +39,9 @@ class _TranslateState extends State<Translate> {
       }
       // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
       final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
-      final content = [Content.text('Translate to Yoruba: {$input}')];
+      final content = [
+        Content.text('Translate precisely to Esperanto: {$input}')
+      ];
       final response = await model.generateContent(content);
       print(response.text);
       setState(() {
@@ -127,6 +129,7 @@ class _TranslateState extends State<Translate> {
                         ),
                       ),
                       const SizedBox(height: 5),
+
                       // Powered by Gemini
                       // Row(
                       //   mainAxisAlignment: MainAxisAlignment.end,
