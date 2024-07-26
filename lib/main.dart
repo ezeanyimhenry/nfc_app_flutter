@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
 import 'package:nfc_app/presentation/home_screen.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  try {
+    await dotenv.load(fileName: ".env");
+    // print("Env file loaded successfully");
+  } catch (e) {
+    // print("Error loading .env file: $e");
+  }
   runApp(const MyApp());
 }
 

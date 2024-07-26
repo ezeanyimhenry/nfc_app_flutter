@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
+import 'package:nfc_app/presentation/translate_screen.dart';
 import 'package:nfc_app/presentation/widgets/dialog_box.dart';
 import 'package:provider/provider.dart';
 
@@ -93,6 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       //     );
                       //   },
                       // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Translate()),
+                      );
                     },
                     child: const Text("TRANSLATE"),
                   ),
