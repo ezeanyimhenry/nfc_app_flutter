@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:nfc_app/notifier/detect_language.dart';
 // import 'package:flutter_svg/svg.dart';
 import 'package:nfc_app/presentation/widgets/custom_button.dart';
 import 'package:nfc_app/presentation/widgets/languages_dropdown.dart';
@@ -18,6 +19,7 @@ class _TranslateState extends State<Translate> {
   bool isResultVisible = false;
   TextEditingController textEditingController = TextEditingController();
   String generatedResult = '';
+  String theDetectedLanguage = '';
   String? _selectedLanguage;
 
   @override
@@ -44,7 +46,7 @@ class _TranslateState extends State<Translate> {
       final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
       final content = [
         Content.text(
-            'Translate simply to general $_selectedLanguage language, no unneccessary comments, just the translated result: $input')
+            'Translate simply to general $_selectedLanguage language, no unneccessary comments, just the translated result: $input'),
       ];
       final response = await model.generateContent(content);
 
@@ -61,6 +63,15 @@ class _TranslateState extends State<Translate> {
     }
   }
 
+  showDetectedLanguage() {
+    setState(() {
+      DetectLanguage(
+          content: (textEditingController.text.isNotEmpty)
+              ? textEditingController.text
+              : "I am a boy");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     void removeFocus() {
@@ -68,6 +79,7 @@ class _TranslateState extends State<Translate> {
     }
 
     void showResult() {
+      showDetectedLanguage();
       translateContent(textEditingController.text);
       // textEditingController.clear();
       removeFocus();
@@ -136,6 +148,16 @@ class _TranslateState extends State<Translate> {
                       const SizedBox(height: 5),
                     ],
                   ),
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  children: [
+                    Text('Detected Language:'),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(theDetectedLanguage)
+                  ],
                 ),
                 const SizedBox(height: 30),
                 Padding(

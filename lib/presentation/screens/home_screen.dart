@@ -110,6 +110,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         Navigator.pop(context);
                         // showResultDialog(context, provider.message);
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Result'),
+                              content: Text(provider.message),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       });
                     }
                     return const SizedBox();
