@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 // import 'package:flutter_svg/svg.dart';
 import 'package:nfc_app/presentation/widgets/custom_button.dart';
+import 'package:nfc_app/presentation/widgets/languages_dropdown.dart';
 
 class Translate extends StatefulWidget {
   const Translate({super.key});
@@ -17,6 +18,8 @@ class _TranslateState extends State<Translate> {
   bool isResultVisible = false;
   TextEditingController textEditingController = TextEditingController();
   String generatedResult = '';
+  String? _selectedLanguage;
+
   @override
   // void initState() {
   //   super.initState();
@@ -32,7 +35,7 @@ class _TranslateState extends State<Translate> {
     super.dispose();
   }
 
-  Future<void> generateExcuse(String input) async {
+  Future<void> translateContent(String input) async {
     try {
       if (apiKey.isEmpty) {
         print('No \$API_KEY environment variable');
@@ -40,17 +43,19 @@ class _TranslateState extends State<Translate> {
       // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
       final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
       final content = [
-        Content.text('Translate precisely to Esperanto: {$input}')
+        Content.text(
+            'Translate simply to general $_selectedLanguage language, no unneccessary comments, just the translated result: $input')
       ];
       final response = await model.generateContent(content);
-      print(response.text);
+
       setState(() {
         generatedResult = response.text ?? 'No response received';
         isResultVisible = true;
       });
     } catch (e) {
       setState(() {
-        generatedResult = 'Error generating excuse: $e';
+        generatedResult = 'Sorry, I am not trained enough to translate this';
+        print(generatedResult);
         isResultVisible = true;
       });
     }
@@ -63,8 +68,8 @@ class _TranslateState extends State<Translate> {
     }
 
     void showResult() {
-      generateExcuse(textEditingController.text);
-      textEditingController.clear();
+      translateContent(textEditingController.text);
+      // textEditingController.clear();
       removeFocus();
     }
 
@@ -123,33 +128,24 @@ class _TranslateState extends State<Translate> {
                               fontStyle: FontStyle.italic,
                               fontFamily: 'Montserrat',
                               fontSize: 13,
-                              color: Colors.grey,
+                              color: Colors.black,
                             ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 5),
-
-                      // Powered by Gemini
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.end,
-                      //   children: [
-                      //     SvgPicture.asset(
-                      //       "svg/google-gemini-icon.svg",
-                      //       height: 20,
-                      //     ),
-                      //     const SizedBox(width: 5),
-                      //     const Text(
-                      //       'Powered by Gemini',
-                      //       style: TextStyle(
-                      //         fontStyle: FontStyle.italic,
-                      //         fontFamily: 'Montserrat',
-                      //         fontSize: 12,
-                      //       ),
-                      //     ),
-                      //   ],
-                      // )
                     ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: LanguagesDropdown(
+                    onLanguageSelected: (String? language) {
+                      setState(() {
+                        _selectedLanguage = language;
+                      });
+                    },
                   ),
                 ),
                 const SizedBox(height: 30),

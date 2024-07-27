@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
-import 'package:nfc_app/presentation/home_screen.dart';
+import 'package:nfc_app/presentation/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
