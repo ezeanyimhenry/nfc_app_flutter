@@ -152,8 +152,8 @@ class _TranslateState extends State<Translate> {
                 const SizedBox(height: 30),
                 Row(
                   children: [
-                    Text('Detected Language:'),
-                    SizedBox(
+                    const Text('Detected Language:'),
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(theDetectedLanguage)
@@ -211,16 +211,16 @@ class _TranslateState extends State<Translate> {
                   visible: isResultVisible,
                   child: IntrinsicHeight(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: SizedBox(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 25.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
                           child: Column(
                             children: [
                               Text(
                                 // 'Text generated',
                                 generatedResult,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 16,
                                 ),
