@@ -23,7 +23,7 @@ We appreciate your interest in contributing to the Translate Buddy. Here are som
      
      ```bash
      git add .
-     git commit -m "Describe the changes made"
+     git commit -m "feat: Describe the changes made"
      ```
    
    - **Push Your Changes:** Push your changes to your forked repository:
