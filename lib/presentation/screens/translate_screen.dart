@@ -54,7 +54,6 @@ class _TranslateState extends State<Translate> {
             'Detect and display only the language of this text: $input'),
       ];
 
-      // Use content1 for the first prompt and content2 for the second prompt as needed
       final response1 = await model.generateContent(content1);
       final response2 = await model.generateContent(content2);
 
