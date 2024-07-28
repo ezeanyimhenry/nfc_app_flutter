@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:nfc_app/notifier/detect_language.dart';
+// import 'package:nfc_app/notifier/detect_language.dart';
 // import 'package:flutter_svg/svg.dart';
 import 'package:nfc_app/presentation/widgets/custom_button.dart';
 import 'package:nfc_app/presentation/widgets/languages_dropdown.dart';
@@ -44,33 +44,40 @@ class _TranslateState extends State<Translate> {
       }
       // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
       final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
-      final content = [
+      final content1 = [
         Content.text(
             'Translate simply to general $_selectedLanguage language, no unneccessary comments, just the translated result: $input'),
       ];
-      final response = await model.generateContent(content);
+      final content2 = [
+        Content.text(
+            'Detect and display only the language of this text, no unneccessary comments, just the detected language: $input'),
+      ];
+      final response1 = await model.generateContent(content1);
+      final response2 = await model.generateContent(content2);
 
       setState(() {
-        generatedResult = response.text ?? 'No response received';
+        generatedResult = response1.text ?? 'No response received';
+        theDetectedLanguage = response2.text ?? 'No response recieved';
         isResultVisible = true;
       });
     } catch (e) {
       setState(() {
         generatedResult = 'Sorry, I am not trained enough to translate this';
+        theDetectedLanguage = '';
         print(generatedResult);
         isResultVisible = true;
       });
     }
   }
 
-  showDetectedLanguage() {
-    setState(() {
-      DetectLanguage(
-          content: (textEditingController.text.isNotEmpty)
-              ? textEditingController.text
-              : "I am a boy");
-    });
-  }
+  // showDetectedLanguage() {
+  //   setState(() {
+  //     DetectLanguage(
+  //         content: (textEditingController.text.isNotEmpty)
+  //             ? textEditingController.text
+  //             : "I am a boy");
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +86,7 @@ class _TranslateState extends State<Translate> {
     }
 
     void showResult() {
-      showDetectedLanguage();
+      // showDetectedLanguage();
       translateContent(textEditingController.text);
       // textEditingController.clear();
       removeFocus();
@@ -150,14 +157,19 @@ class _TranslateState extends State<Translate> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Row(
-                  children: [
-                    Text('Detected Language:'),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(theDetectedLanguage)
-                  ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Detected Language:'),
+                      const SizedBox(width: 2),
+                      Container(
+                        padding: const EdgeInsets.only(right: 25),
+                        child: Text(theDetectedLanguage),
+                      )
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 30),
                 Padding(
@@ -184,7 +196,7 @@ class _TranslateState extends State<Translate> {
                           //   color: Colors.white,
                           // ),
                           onTap: showResult,
-                          buttonName: 'Generate',
+                          buttonName: 'Translate',
                           // buttonColor:
                           // Theme.of(context).colorScheme.inversePrimary,
                         ),
