@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
-import 'package:nfc_app/presentation/screens/home_screen.dart';
+import 'package:nfc_app/presentation/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -25,12 +25,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => NFCNotifier()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const HomeScreen(title: 'Flutter Demo Home Page'),
+        home: const WelcomeScreen(),
       ),
     );
   }
