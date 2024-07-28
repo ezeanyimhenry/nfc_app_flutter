@@ -20,6 +20,7 @@ class _TranslateState extends State<Translate> {
   TextEditingController textEditingController = TextEditingController();
   String generatedResult = '';
   String theDetectedLanguage = '';
+
   String? _selectedLanguage;
 
   @override
@@ -44,14 +45,22 @@ class _TranslateState extends State<Translate> {
       }
       // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
       final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
-      final content = [
+      final content1 = [
         Content.text(
             'Translate simply to general $_selectedLanguage language, no unneccessary comments, just the translated result: $input'),
       ];
-      final response = await model.generateContent(content);
+      final content2 = [
+        Content.text(
+            'Detect and display only the language of this text: $input'),
+      ];
+
+      // Use content1 for the first prompt and content2 for the second prompt as needed
+      final response1 = await model.generateContent(content1);
+      final response2 = await model.generateContent(content2);
 
       setState(() {
-        generatedResult = response.text ?? 'No response received';
+        generatedResult = response1.text ?? 'No response received';
+        theDetectedLanguage = response2.text ?? 'No response recieved';
         isResultVisible = true;
       });
     } catch (e) {
@@ -63,14 +72,14 @@ class _TranslateState extends State<Translate> {
     }
   }
 
-  showDetectedLanguage() {
-    setState(() {
-      DetectLanguage(
-          content: (textEditingController.text.isNotEmpty)
-              ? textEditingController.text
-              : "I am a boy");
-    });
-  }
+  // showDetectedLanguage() {
+  //   setState(() {
+  //     DetectLanguage(
+  //         content: (textEditingController.text.isNotEmpty)
+  //             ? textEditingController.text
+  //             : "I am a boy");
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +88,7 @@ class _TranslateState extends State<Translate> {
     }
 
     void showResult() {
-      showDetectedLanguage();
+      // showDetectedLanguage();
       translateContent(textEditingController.text);
       // textEditingController.clear();
       removeFocus();
@@ -150,14 +159,19 @@ class _TranslateState extends State<Translate> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Row(
-                  children: [
-                    const Text('Detected Language:'),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(theDetectedLanguage)
-                  ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Detected Language:'),
+                      const SizedBox(width: 2),
+                      Container(
+                        padding: const EdgeInsets.only(right: 25),
+                        child: Text(theDetectedLanguage),
+                      )
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 30),
                 Padding(
@@ -184,7 +198,7 @@ class _TranslateState extends State<Translate> {
                           //   color: Colors.white,
                           // ),
                           onTap: showResult,
-                          buttonName: 'Generate',
+                          buttonName: 'Translate',
                           // buttonColor:
                           // Theme.of(context).colorScheme.inversePrimary,
                         ),

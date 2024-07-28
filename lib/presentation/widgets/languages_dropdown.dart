@@ -50,7 +50,7 @@ class _LanguagesDropdownState extends State<LanguagesDropdown> {
             borderRadius: BorderRadius.circular(5.0),
           ),
           child: DropdownSearch<String>(
-            dropdownDecoratorProps: DropDownDecoratorProps(
+            dropdownDecoratorProps: const DropDownDecoratorProps(
               dropdownSearchDecoration: InputDecoration(
                 hintText: "Select Language",
                 border: InputBorder.none,
