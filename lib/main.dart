@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nfc_app/notifier/bottom_nav.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
 import 'package:nfc_app/presentation/screens/welcome_screen.dart';
 import 'package:nfc_app/themes/app_themes.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NFCNotifier()),
+        ChangeNotifierProvider(create: (_) => BottomNavigationProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

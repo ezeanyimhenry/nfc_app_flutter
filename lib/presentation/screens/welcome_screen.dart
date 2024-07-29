@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_app/presentation/screens/home.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -42,7 +43,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (txt) => const HomeScreen()));
+                  },
                   style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
