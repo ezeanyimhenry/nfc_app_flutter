@@ -18,6 +18,7 @@ class AllPadding{
   static EdgeInsets padding24 = const EdgeInsets.all(24.0);
   static EdgeInsets padding16 = const EdgeInsets.all(16.0);
   static EdgeInsets padding36 = const EdgeInsets.all(36.0);
+  static EdgeInsets padding8 = const EdgeInsets.all(8.0);
 }
 //Gap for the width
 class XGap extends StatelessWidget {
