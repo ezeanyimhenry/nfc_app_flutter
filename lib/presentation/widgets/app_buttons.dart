@@ -79,3 +79,42 @@ class SecondaryButton extends StatelessWidget {
     );
   }
 }
+
+// Inactive Button
+class InactiveButton extends StatelessWidget {
+  final Function() onTap;
+  final String text;
+  final Color? color;
+  final Color? textColor;
+  final double? width;
+  final double? height;
+  const InactiveButton({
+    super.key,
+    required this.onTap,
+    required this.text,
+    this.width,
+    this.height,
+    this.color,
+    this.textColor,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onTap,
+      style: TextButton.styleFrom(
+        backgroundColor: color ?? AppColors.inactiveColor,
+        minimumSize: Size(
+          width ?? double.infinity,
+          height ?? 48,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      child: Text(
+        text,
+        style: AppTextStyle.inactiveButtonText,
+      ),
+    );
+  }
+}
