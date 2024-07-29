@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:nfc_app/constants/app_colors.dart';
+import 'package:nfc_app/constants/app_spacing.dart';
+import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/presentation/screens/home.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -18,28 +22,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              SvgPicture.asset('assets/icons/svg/welcomescreen_icon.svg'),
+              const YGap(),
+              Text(
                 'Welcome to Translate Buddy',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: AppTextStyle.welcomeScreenHeading,
               ),
               const SizedBox(height: 50),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[400],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text('Use App'),
-                ),
-              ),
-              const SizedBox(height: 15),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -49,13 +38,36 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         MaterialPageRoute(
                             builder: (txt) => const HomeScreen()));
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'Use App',
+                    style: AppTextStyle.primaryButtonText,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    
+                  },
                   style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      side: const BorderSide(width: 1, color: Colors.amber)),
-                  child: const Text('Use App'),
+                      side: const BorderSide(
+                          width: 1, color: AppColors.primaryColor)),
+                  child: Text(
+                    'Watch Demo',
+                    style: AppTextStyle.secondaryButtonText,
+                  ),
                 ),
               ),
             ],

@@ -65,6 +65,13 @@ class AppTextStyle {
       color: AppColors.primaryColor,
     ),
   );
+  static final welcomeScreenHeading = GoogleFonts.lilitaOne(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w400,
+      fontSize: 20.0,
+      color: AppColors.primaryTextColor,
+    ),
+  );
   static final inactiveButtonText = GoogleFonts.inter(
     textStyle: const TextStyle(
       fontWeight: FontWeight.w500,
