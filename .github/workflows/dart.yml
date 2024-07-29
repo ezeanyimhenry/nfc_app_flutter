@@ -26,8 +26,8 @@ jobs:
         run: flutter pub get
       # - name: Running tests without coverage
       #   run: flutter test
-      - name: Formatting lib folder
-        run: flutter format lib
+      # - name: Formatting lib folder
+      #   run: flutter format lib
       - name: Running analysis on project
         run: flutter analyze
       - name: Building apk
