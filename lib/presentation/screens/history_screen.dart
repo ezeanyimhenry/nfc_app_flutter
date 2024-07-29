@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
+import 'package:nfc_app/presentation/widgets/history_card.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
@@ -11,6 +13,7 @@ class HistoryScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: const SizedBox(),
@@ -48,7 +51,7 @@ class HistoryScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      SvgPicture.asset("assets/svg/icons/search.svg"),
+                      SvgPicture.asset("assets/icons/svg/search.svg"),
                       const XGap(
                         value: 8,
                       ),
@@ -65,28 +68,69 @@ class HistoryScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SvgPicture.asset("assets/svg/icons/filter.svg"),
+                  SvgPicture.asset("assets/icons/svg/filter.svg"),
                 ],
               ),
             ),
             YGap(
-              value: MediaQuery.sizeOf(context).height * 0.13,
+              value: MediaQuery.sizeOf(context).height * 0.024,
             ),
-            SvgPicture.asset("assets/svg/icons/no_history.svg"),
-            const YGap(
-              value: 18,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                    text: 'Your History',
+                    style: AppTextStyle.secondaryButtonText,
+                  ),
+                  TextSpan(
+                    text: ' (6)',
+                    style: AppTextStyle.bodyTextSm,
+                  ),
+                ])),
+                RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                    text: 'Sort by:',
+                    style: AppTextStyle.smallBodyTextInactive,
+                  ),
+                  TextSpan(
+                    text: ' All',
+                    style: AppTextStyle.bodyTextSm,
+                  ),
+                ]))
+              ],
             ),
-            Text(
-              "No History",
-              style: AppTextStyle.heading2,
+            YGap(
+              value: MediaQuery.sizeOf(context).height * 0.016,
             ),
-            const YGap(
-              value: 4,
-            ),
-            Text(
-              "Your Scan history will be appeared here",
-              style: AppTextStyle.bodyTextSemiBold,
-            )
+            Expanded(
+                child: ListView.separated(
+              itemCount: 10,
+              itemBuilder: (ctx, index) {
+                return Dismissible(
+                    key: Key(
+                      index.toString(),
+                    ),
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      height: MediaQuery.sizeOf(context).height * 0.28,
+                      width: MediaQuery.sizeOf(context).width * 0.1,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                          child:
+                              SvgPicture.asset("assets/icons/svg/delete.svg")),
+                    ),
+                    child: const HistoryCard());
+              },
+              separatorBuilder: (BuildContext context, int index) => const YGap(
+                value: 24,
+              ),
+            ))
           ],
         ),
       ),
