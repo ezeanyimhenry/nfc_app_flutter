@@ -5,7 +5,7 @@ import 'package:nfc_app/constants/app_colors.dart';
 class AppTextStyle {
   AppTextStyle._();
 
-  //nav active and inactive 
+  //nav active and inactive
   static final smallBodyTextActive = GoogleFonts.inter(
     textStyle: const TextStyle(
       fontWeight: FontWeight.w500,
@@ -21,9 +21,7 @@ class AppTextStyle {
     ),
   );
 
-
-  
-  // Normal text 
+  // Normal text
   static final bodyText = GoogleFonts.inter(
     textStyle: const TextStyle(
       fontWeight: FontWeight.w400,
@@ -60,6 +58,11 @@ class AppTextStyle {
       color: AppColors.primaryColor,
     ),
   );
-
-  
+  static final welcomeScreenHeading = GoogleFonts.lilitaOne(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w400,
+      fontSize: 20.0,
+      color: AppColors.primaryTextColor,
+    ),
+  );
 }
