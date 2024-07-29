@@ -23,20 +23,20 @@ class AppBottomNav extends StatelessWidget {
         items: [
           BottomNavigationBarItem(
             icon: SvgPicture.asset((selectedindex == 0)
-                ? 'assets/svg/icons/read_nfc_active.svg'
-                : 'assets/svg/icons/read_nfc_inactive.svg'),
+                ? 'assets/icons/svg/read_nfc_active.svg'
+                : 'assets/icons/svg/read_nfc_inactive.svg'),
             label: 'Read NFC',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset((selectedindex == 1)
-                ? 'assets/svg/icons/history_active.svg'
-                : 'assets/svg/icons/history_inactive.svg'),
+                ? 'assets/icons/svg/history_active.svg'
+                : 'assets/icons/svg/history_inactive.svg'),
             label: 'History',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset((selectedindex == 2)
-                ? 'assets/svg/icons/settings_active.svg'
-                : 'assets/svg/icons/settings_inactive.svg'),
+                ? 'assets/icons/svg/settings_active.svg'
+                : 'assets/icons/svg/settings_inactive.svg'),
             label: 'Settings',
           ),
         ],
