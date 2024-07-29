@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       - name: Running tests without coverage
-        run: flutter test --no-pub
+        run: flutter test
       - name: Formatting lib folder
         run: flutter format lib
       - name: Running analysis on project
