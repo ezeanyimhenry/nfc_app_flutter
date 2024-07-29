@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
+import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 
 class ReadNFCScreen extends StatefulWidget {
@@ -47,12 +48,12 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                 ),
               ),
               const YGap(value: 20),
-               Column(
+              Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                    //  const Icon(Icons.nfc),
+                      //  const Icon(Icons.nfc),
                       const XGap(value: 10),
                       Expanded(
                         child: Text(
@@ -63,7 +64,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                       ),
                     ],
                   ),
-                 const  YGap(value: 10),
+                  const YGap(value: 10),
                   Row(
                     children: [
                       // const Icon(Icons.wifi),
@@ -78,7 +79,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                     ],
                   ),
                 ],
-                             ),
+              ),
               const SizedBox(height: 20.0),
               PrimaryButton(
                 onTap: () {
@@ -108,7 +109,17 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.6,
                 child: PrimaryButton(
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return const AppBottomsheet(
+                            message: "This is the message",
+                            title: "Select Target Language",
+                            centerContent: Column(children: [Text('Test')]),
+                          );
+                        });
+                  },
                   text: 'Scan NFC tag',
                 ),
               ),

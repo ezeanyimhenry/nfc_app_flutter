@@ -42,11 +42,6 @@ class AppBottomsheet extends StatelessWidget {
             style: AppTextStyle.heading2,
           ),
           const YGap(value: 24),
-          const YGap(value: 24),
-          Text(
-            title,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
           if (centerContent != null) ...[
             const YGap(value: 16),
             centerContent!,
@@ -74,7 +69,11 @@ class AppBottomsheet extends StatelessWidget {
             PrimaryButton(onTap: primaryButtonOnTap!, text: primaryButtonText)
           else if (hasSecondaryButton && secondaryButtonOnTap != null)
             SecondaryButton(
-                onTap: secondaryButtonOnTap!, text: secondaryButtonText),
+                onTap: secondaryButtonOnTap!, text: secondaryButtonText)
+          else
+            const SizedBox(
+              width: double.infinity,
+            )
         ],
       ),
     );
