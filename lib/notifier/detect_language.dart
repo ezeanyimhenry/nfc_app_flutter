@@ -17,7 +17,7 @@ class _DetectLanguageState extends State<DetectLanguage> {
   Future<void> detectLanguage(String input) async {
     try {
       if (apiKey.isEmpty) {
-        print('No \$API_KEY environment variable');
+        // print('No \$API_KEY environment variable');
       }
       // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
       final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
@@ -39,7 +39,7 @@ class _DetectLanguageState extends State<DetectLanguage> {
         // print(generatedResult);
         // isResultVisible = true;
       });
-      print(e);
+      // print(e);
     }
   }
 
