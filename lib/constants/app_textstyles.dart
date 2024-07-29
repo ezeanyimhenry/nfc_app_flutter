@@ -50,6 +50,12 @@ class AppTextStyle {
       fontSize: 20.0,
       color: AppColors.secondaryTextColor,
     ),
+  ); static final heading3 = GoogleFonts.inter(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: 20.0,
+      color: AppColors.primaryTextColor,
+    ),
   );
   static final primaryButtonText = GoogleFonts.inter(
     textStyle: const TextStyle(

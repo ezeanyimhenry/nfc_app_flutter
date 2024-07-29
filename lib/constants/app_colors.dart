@@ -13,10 +13,14 @@ class AppColors {
   static const primaryTextColor = Color(0xFF343A40);
   static const secondaryTextColor = Color(0xFF6C757D);
   static const semiBoldTextColor = Color(0xFF1B1B1B);
+  static const miscellaneousTextColor = Color(0xFFF2F2F7);
 
   // Success Color
   static const successColor = Color(0xFF28A745);
 
   //Failure Color
-  static const failureColor = Color(0xFFF00C22);
+  static const failureColor = Color(0xFFF00C22); 
+  
+   //Divider Color
+  static const dividerColour = Color(0xFFD9D9D9);
 }
