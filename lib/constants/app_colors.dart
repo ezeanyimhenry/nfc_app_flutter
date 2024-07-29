@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-
   // Color
   static const primaryColor = Color(0xFF00A19D);
   static const secondaryColor = Color(0xFFFFB344);
   static const backgroundColor = Color(0xFFF8F9F5);
+  static const inactiveColor = Color(0xFFD3D3D3);
 
   //Text Color
   static const primaryTextColor = Color(0xFF343A40);
@@ -19,6 +19,4 @@ class AppColors {
 
   //Failure Color
   static const failureColor = Color(0xFFF00C22);
-
-  
 }

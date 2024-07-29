@@ -36,6 +36,13 @@ class AppTextStyle {
       color: AppColors.semiBoldTextColor,
     ),
   );
+  static final bodyTextSm = GoogleFonts.inter(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w400,
+      fontSize: 14.0,
+      color: AppColors.primaryTextColor,
+    ),
+  );
   //heading text(Bottombar)
   static final heading2 = GoogleFonts.inter(
     textStyle: const TextStyle(
@@ -63,6 +70,13 @@ class AppTextStyle {
       fontWeight: FontWeight.w400,
       fontSize: 20.0,
       color: AppColors.primaryTextColor,
+    ),
+  );
+  static final inactiveButtonText = GoogleFonts.inter(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: 16.0,
+      color: AppColors.secondaryTextColor,
     ),
   );
 }
