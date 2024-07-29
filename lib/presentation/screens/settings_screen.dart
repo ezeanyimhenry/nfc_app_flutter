@@ -60,7 +60,7 @@ class SettingsScreen extends StatelessWidget {
                     ListTile(
                       title: Text(
                         'Target Language',
-                        style: AppTextStyle.bodyText,
+                        style: AppTextStyle.bodyTextSm,
                       ),
                       trailing:
                           SvgPicture.asset("assets/icons/svg/caret_right.svg"),
@@ -109,7 +109,7 @@ class SettingsScreen extends StatelessWidget {
                     ListTile(
                       title: Text(
                         'Help Center',
-                        style: AppTextStyle.bodyText,
+                        style: AppTextStyle.bodyTextSm,
                       ),
                       trailing:
                           SvgPicture.asset("assets/icons/svg/caret_right.svg"),
@@ -118,7 +118,7 @@ class SettingsScreen extends StatelessWidget {
                     ListTile(
                       title: Text(
                         'Contact Us',
-                        style: AppTextStyle.bodyText,
+                        style: AppTextStyle.bodyTextSm,
                       ),
                       trailing:
                           SvgPicture.asset("assets/icons/svg/caret_right.svg"),
@@ -127,7 +127,7 @@ class SettingsScreen extends StatelessWidget {
                     ListTile(
                       title: Text(
                         'FAQs',
-                        style: AppTextStyle.bodyText,
+                        style: AppTextStyle.bodyTextSm,
                       ),
                       trailing:
                           SvgPicture.asset("assets/icons/svg/caret_right.svg"),
@@ -169,7 +169,7 @@ class SettingsScreen extends StatelessWidget {
                     ListTile(
                       title: Text(
                         'Terms of Use',
-                        style: AppTextStyle.bodyText,
+                        style: AppTextStyle.bodyTextSm,
                       ),
                       trailing:
                           SvgPicture.asset("assets/icons/svg/caret_right.svg"),
@@ -178,7 +178,7 @@ class SettingsScreen extends StatelessWidget {
                     ListTile(
                       title: Text(
                         'Privacy Policy',
-                        style: AppTextStyle.bodyText,
+                        style: AppTextStyle.bodyTextSm,
                       ),
                       trailing:
                           SvgPicture.asset("assets/icons/svg/caret_right.svg"),
@@ -187,7 +187,7 @@ class SettingsScreen extends StatelessWidget {
                     ListTile(
                       title: Text(
                         'Rate Us',
-                        style: AppTextStyle.bodyText,
+                        style: AppTextStyle.bodyTextSm,
                       ),
                       trailing:
                           SvgPicture.asset("assets/icons/svg/caret_right.svg"),

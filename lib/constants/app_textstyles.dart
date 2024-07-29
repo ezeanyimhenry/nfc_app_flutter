@@ -5,7 +5,7 @@ import 'package:nfc_app/constants/app_colors.dart';
 class AppTextStyle {
   AppTextStyle._();
 
-  //nav active and inactive 
+  //nav active and inactive
   static final smallBodyTextActive = GoogleFonts.inter(
     textStyle: const TextStyle(
       fontWeight: FontWeight.w500,
@@ -21,9 +21,7 @@ class AppTextStyle {
     ),
   );
 
-
-  
-  // Normal text 
+  // Normal text
   static final bodyText = GoogleFonts.inter(
     textStyle: const TextStyle(
       fontWeight: FontWeight.w400,
@@ -36,6 +34,13 @@ class AppTextStyle {
       fontWeight: FontWeight.w600,
       fontSize: 16.0,
       color: AppColors.semiBoldTextColor,
+    ),
+  );
+  static final bodyTextSm = GoogleFonts.inter(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w400,
+      fontSize: 14.0,
+      color: AppColors.primaryTextColor,
     ),
   );
   //heading text(Bottombar)
@@ -60,6 +65,11 @@ class AppTextStyle {
       color: AppColors.primaryColor,
     ),
   );
-
-  
+  static final inactiveButtonText = GoogleFonts.inter(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: 16.0,
+      color: AppColors.secondaryTextColor,
+    ),
+  );
 }

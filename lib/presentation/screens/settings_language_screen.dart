@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_nav.dart';
@@ -71,11 +70,9 @@ class SettingsLanguagecreen extends StatelessWidget {
                   YGap(
                     value: MediaQuery.sizeOf(context).height * 0.5,
                   ),
-                  PrimaryButton(
+                  InactiveButton(
                     onTap: () {},
                     text: 'Save',
-                    color: const Color(0xFFD3D3D3),
-                    textColor: AppColors.secondaryTextColor,
                   )
                   // PrimaryButton(onTap: () {}, text: 'Save')
                 ],
@@ -105,7 +102,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //                   SvgPicture.asset("assets/icons/svg/search.svg"),
           //               title: Text(
           //                 'Search Language',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
@@ -138,7 +135,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //             child: ListTile(
           //               title: Text(
           //                 'Spanish',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
@@ -148,7 +145,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //             child: ListTile(
           //               title: Text(
           //                 'English',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
@@ -158,7 +155,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //             child: ListTile(
           //               title: Text(
           //                 'Korean',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
@@ -168,7 +165,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //             child: ListTile(
           //               title: Text(
           //                 'German',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
@@ -178,7 +175,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //             child: ListTile(
           //               title: Text(
           //                 'French',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
@@ -188,7 +185,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //             child: ListTile(
           //               title: Text(
           //                 'Mandarin',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
@@ -198,7 +195,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //             child: ListTile(
           //               title: Text(
           //                 'Japanese',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
@@ -208,7 +205,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //             child: ListTile(
           //               title: Text(
           //                 'Portuguese',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
@@ -218,7 +215,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //             child: ListTile(
           //               title: Text(
           //                 'Igbo',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
@@ -228,7 +225,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //             child: ListTile(
           //               title: Text(
           //                 'Yoruba',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
@@ -238,7 +235,7 @@ class SettingsLanguagecreen extends StatelessWidget {
           //             child: ListTile(
           //               title: Text(
           //                 'Hausa',
-          //                 style: AppTextStyle.bodyText,
+          //                 style: AppTextStyle.bodyTextSm,
           //               ),
           //               onTap: () {},
           //             ),
