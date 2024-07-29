@@ -28,37 +28,26 @@ class Languages {
     'Zulu',
 
     // Nigerian local languages
-    'Afar', 'Ajawa', 'Akpafi', 'Amasiri', 'Anang', 'Aso', 'Babanki',
+    'Ajawa', 'Akpafi', 'Amasiri', 'Anang', 'Aso', 'Babanki',
     'Bassa', 'Berom', 'Birom', 'Buru', 'Efik', 'Egbiri', 'Ejagham', 'Ekajuk',
     'Ekoid', 'Eku', 'Enang', 'Ewondo', 'Fulfulde', 'Gwari', 'Gwandara',
-    'Idoma', 'Igala', 'Jukun', 'Kanuri', 'Koma', 'Kpelle', 'Mabia',
+    'Idoma', 'Igala', 'Jukun', 'Koma', 'Kpelle', 'Mabia',
     'Mbiri', 'Mumuye', 'Ngas', 'Ngene', 'Piti', 'Rukuba', 'Shubi', 'Sokoto',
     'Tiv', 'Ugep',
 
     // Local languages from other countries
     // Africa
     'Acoli', 'Amo', 'Berber', 'Chaga', 'Digo', 'Fante', 'Kisii', 'Luo',
-    'Malagasy', 'Ndebele', 'Shona', 'Tswana', 'Wolof', 'Xhosa', 'Zulu',
+    'Ndebele', 'Tswana',
 
     // Asia
-    'Bengali', 'Burmese', 'Cambodian', 'Farsi', 'Gujarati', 'Hmong', 'Hindi',
-    'Javanese', 'Kazakh', 'Khmer', 'Kurdish', 'Malay', 'Nepali', 'Pashto',
-    'Punjabi', 'Tagalog', 'Tamil', 'Thai', 'Turkish', 'Uighur', 'Urdu',
-    'Vietnamese',
-
-    // Europe
-    'Catalan', 'Croatian', 'Czech', 'Danish', 'Dutch', 'Estonian', 'Finnish',
-    'Galician', 'Georgian', 'German', 'Greek', 'Hungarian', 'Icelandic',
-    'Irish', 'Italian', 'Latvian', 'Lithuanian', 'Macedonian', 'Maltese',
-    'Norwegian', 'Polish', 'Portuguese', 'Romanian', 'Russian', 'Serbian',
-    'Slovak', 'Slovene', 'Spanish', 'Swedish',
+    'Cambodian', 'Farsi', 'Hindi', 'Kurdish', 'Tagalog', 'Uighur',
 
     // Americas
-    'Aymara', 'Brazilian Portuguese', 'Quechua', 'Spanish', 'Guarani',
-    'Nahuatl', 'Mayan', 'Mapudungun', 'Papiamento',
+    'Brazilian Portuguese', 'Nahuatl', 'Mayan', 'Mapudungun', 'Papiamento',
 
     // Oceania
-    'Hiri Motu', 'Samoan', 'Tongan', 'Fijian', 'Bislama'
+    'Hiri Motu', 'Tongan'
   }.toList()
     ..sort(); // Remove duplicates and sort alphabetically
 }
