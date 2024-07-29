@@ -11,7 +11,6 @@ class HistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.28,
       width: MediaQuery.sizeOf(context).width,
       padding: AllPadding.padding16,
       decoration: BoxDecoration(
@@ -23,14 +22,14 @@ class HistoryCard extends StatelessWidget {
         children: [
           Text(
             "Source Language - Spanish",
-            style: AppTextStyle.heading3,
+            style: AppTextStyle.bodyTextSemiBold,
           ),
           const YGap(
             value: 24,
           ),
           Text(
             "\"Bienvenido al Museo de Historia. Siga las señales para iniciar su recorrido y descubra exposiciones fascinantes sobre nuestra herencia cultural.\"",
-            style: AppTextStyle.bodyText,
+            style: AppTextStyle.bodyTextSm,
           ),
           const YGap(
             value: 20,
@@ -50,11 +49,11 @@ class HistoryCard extends StatelessWidget {
             children: [
               Text(
                 "2 days ago",
-                style: AppTextStyle.bodyText,
+                style: AppTextStyle.bodyTextSm,
               ),
               Text(
                 "Swipe left to delete",
-                style: AppTextStyle.bodyText,
+                style: AppTextStyle.bodyTextSm,
               )
             ],
           )

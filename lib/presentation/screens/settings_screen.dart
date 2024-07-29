@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/presentation/screens/settings_language_screen.dart';
+import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -113,7 +114,13 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       trailing:
                           SvgPicture.asset("assets/icons/svg/caret_right.svg"),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const TranslateScreen()),
+                        );
+                      },
                     ),
                     ListTile(
                       title: Text(
