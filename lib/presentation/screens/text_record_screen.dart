@@ -74,7 +74,10 @@ class TextRecordScreen extends StatelessWidget {
                 ),
               ],
             ),
-            PrimaryButton(onTap: () {}, text: 'Add')
+            const YGap(value: 16.0),
+            PrimaryButton(onTap: () {
+              
+            }, text: 'Add')
           ],
         ),
       ),
