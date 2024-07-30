@@ -61,7 +61,7 @@ class _TranslateScreenState extends State<TranslateScreen> {
       setState(() {
         generatedResult = 'Sorry, I am not trained enough to translate this';
         theDetectedLanguage = '';
-        print(generatedResult);
+        // print(generatedResult);
         isResultVisible = true;
       });
     }
