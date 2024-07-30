@@ -5,7 +5,9 @@ class AppThemeData {
   AppThemeData._();
 
   static final lightMode = ThemeData(
-      colorScheme: const ColorScheme.light(
-    surface: AppColors.backgroundColor,
-  ));
+    colorScheme: const ColorScheme.light(
+      surface: AppColors.backgroundColor,
+    ),
+   
+  );
 }

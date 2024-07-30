@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
+import 'package:nfc_app/constants/app_svgs.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/presentation/screens/translate/model/language_data.dart';
 import 'package:nfc_app/presentation/screens/translate/widgets/language_card.dart';
-import 'package:nfc_app/presentation/screens/translate/widgets/select_language_sheet.dart';
-import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
+import 'package:nfc_app/presentation/widgets/select_language_sheet.dart';
 
 class TranslateScreen extends StatefulWidget {
   final String message;
@@ -20,11 +21,12 @@ class TranslateScreen extends StatefulWidget {
 
 class _TranslateScreenState extends State<TranslateScreen> {
   final String apiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
+
+  bool isTranslating = false;
   bool isResultVisible = false;
   String generatedResult = '';
   String theDetectedLanguage = '';
   String? _selectedLanguage = "English";
-  // String selectedLanguage = "Select";
 
   @override
   void initState() {
@@ -39,6 +41,9 @@ class _TranslateScreenState extends State<TranslateScreen> {
       if (apiKey.isEmpty) {
         // print('No \$API_KEY environment variable');
       }
+      setState(() {
+        isTranslating = true;
+      });
       // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
       final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
       final content1 = [
@@ -56,6 +61,7 @@ class _TranslateScreenState extends State<TranslateScreen> {
         generatedResult = response1.text ?? 'No response received';
         theDetectedLanguage = response2.text ?? 'No response recieved';
         isResultVisible = true;
+        isTranslating = false;
       });
     } catch (e) {
       setState(() {
@@ -63,6 +69,7 @@ class _TranslateScreenState extends State<TranslateScreen> {
         theDetectedLanguage = '';
         // print(generatedResult);
         isResultVisible = true;
+        isTranslating = false;
       });
     }
   }
@@ -77,7 +84,9 @@ class _TranslateScreenState extends State<TranslateScreen> {
   // }
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -100,13 +109,14 @@ class _TranslateScreenState extends State<TranslateScreen> {
             ),
             const YGap(),
             LanguageCard(
+              isTranslating: isTranslating,
               data: LanguageData(
-                content: generatedResult,
+                content:  generatedResult,
                 type: LanguageType.target,
                 name: _selectedLanguage ?? "English",
               ),
             ),
-            const YGap(value: 24),
+            YGap(value: screenHeight * 0.16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -130,17 +140,10 @@ class _TranslateScreenState extends State<TranslateScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return const AppBottomsheet(
-                            message: "",
-                            title: "Select Target Language",
-                            centerContent: SelectTargetLanguageSheet(),
-                          );
-                        }).then((selected) {
+                    showLanguageSelectionSheet(context).then((selected) {
                       setState(() {
                         _selectedLanguage = selected;
+                        translateContent(widget.message);
                       });
                     });
                   },
@@ -160,12 +163,28 @@ class _TranslateScreenState extends State<TranslateScreen> {
                 )
               ],
             ),
-            const YGap(value: 32),
-            PrimaryButton(
-              onTap: () {
-                translateContent(widget.message);
-              },
-              text: "Translate",
+            const YGap(value: 24),
+            PrimaryButton(color: isTranslating?Colors.grey:null,
+              onTap:  () {
+                     isTranslating
+                  ?(){}: translateContent(widget.message);
+                    },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    isTranslating ? "Translating..." : "Translate",
+                    style: AppTextStyle.primaryButtonText,
+                  ),
+                  Visibility(
+                    visible: isTranslating,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: SvgPicture.asset(AppSvgs.loader),
+                    ),
+                  )
+                ],
+              ),
             )
           ],
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_svgs.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
@@ -9,9 +10,11 @@ import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 class LanguageCard extends StatelessWidget {
   const LanguageCard({
     required this.data,
+    this.isTranslating = false,
     super.key,
   });
   final LanguageData data;
+  final bool isTranslating;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +31,19 @@ class LanguageCard extends StatelessWidget {
             style: AppTextStyle.bodyTextSemiBold,
           ),
           const YGap(value: 24),
-          Text(data.content),
+
+          isTranslating
+              ? Center(
+                  child: SvgPicture.asset(
+                    AppSvgs.loader,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.primaryColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                )
+              : Text(data.content),
+
           Padding(
             padding: YPadding.vertical16,
             child: const Divider(
