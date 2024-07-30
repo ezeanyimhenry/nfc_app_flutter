@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -101,93 +99,93 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
   //   );
   // }
 
-  Future<void> showSequentialBottomSheets(BuildContext context) async {
-    final myProvider = Provider.of<NFCNotifier>(context, listen: false);
+  // Future<void> showSequentialBottomSheets(BuildContext context) async {
+  //   final myProvider = Provider.of<NFCNotifier>(context, listen: false);
 
-    // Function to show a bottom sheet and wait for it to close
-    Future<void> showBottomSheetAndWait({
-      required Widget bottomSheet,
-      bool autoDismiss = true,
-    }) async {
-      final Completer<void> completer = Completer<void>();
+  //   // Function to show a bottom sheet and wait for it to close
+  //   Future<void> showBottomSheetAndWait({
+  //     required Widget bottomSheet,
+  //     bool autoDismiss = true,
+  //   }) async {
+  //     final Completer<void> completer = Completer<void>();
 
-      showModalBottomSheet(
-        context: context,
-        isDismissible: !autoDismiss,
-        enableDrag: autoDismiss,
-        builder: (context) {
-          if (autoDismiss) {
-            Timer(const Duration(seconds: 3), () {
-              // Close the bottom modal sheet if autoDismiss is true
-              Navigator.pop(context);
-            });
-          }
-          return bottomSheet;
-        },
-      ).whenComplete(() {
-        completer.complete();
-      });
+  //     showModalBottomSheet(
+  //       context: context,
+  //       isDismissible: !autoDismiss,
+  //       enableDrag: autoDismiss,
+  //       builder: (context) {
+  //         if (autoDismiss) {
+  //           Timer(const Duration(seconds: 3), () {
+  //             // Close the bottom modal sheet if autoDismiss is true
+  //             Navigator.pop(context);
+  //           });
+  //         }
+  //         return bottomSheet;
+  //       },
+  //     ).whenComplete(() {
+  //       completer.complete();
+  //     });
 
-      return completer.future;
-    }
+  //     return completer.future;
+  //   }
 
-    // Show the first bottom sheet
-    await showBottomSheetAndWait(
-      bottomSheet: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.4,
-        child: AppBottomsheet(
-          message:
-              "Please place the back of your device near the tag receiver to read tag.",
-          title: "Ready to Scan",
-          centerContent: SvgPicture.asset('assets/icons/svg/ready_to_scan.svg'),
-        ),
-      ),
-    );
-    // Wait for the bottom sheet to close before showing the next one
-    await Future.delayed(const Duration(milliseconds: 300));
+  //   // Show the first bottom sheet
+  //   await showBottomSheetAndWait(
+  //     bottomSheet: SizedBox(
+  //       height: MediaQuery.of(context).size.height * 0.4,
+  //       child: AppBottomsheet(
+  //         message:
+  //             "Please place the back of your device near the tag receiver to read tag.",
+  //         title: "Ready to Scan",
+  //         centerContent: SvgPicture.asset('assets/icons/svg/ready_to_scan.svg'),
+  //       ),
+  //     ),
+  //   );
+  //   // Wait for the bottom sheet to close before showing the next one
+  //   await Future.delayed(const Duration(milliseconds: 300));
 
-    // Show the second bottom sheet
-    await showBottomSheetAndWait(
-      bottomSheet: const SizedBox(
-        // height: MediaQuery.of(context).size.height * 0.4,
-        child: AppBottomsheet(
-          message: "Make sure your device is well placed.",
-          title: "Scanning...",
-          centerContent: ProgressIndicatorWithText(
-            progress: 0.75,
-          ),
-        ),
-      ),
-    );
-    // Wait for the bottom sheet to close before showing the next one
-    await Future.delayed(const Duration(milliseconds: 300));
+  //   // Show the second bottom sheet
+  //   await showBottomSheetAndWait(
+  //     bottomSheet: const SizedBox(
+  //       // height: MediaQuery.of(context).size.height * 0.4,
+  //       child: AppBottomsheet(
+  //         message: "Make sure your device is well placed.",
+  //         title: "Scanning...",
+  //         centerContent: ProgressIndicatorWithText(
+  //           progress: 0.75,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  //   // Wait for the bottom sheet to close before showing the next one
+  //   await Future.delayed(const Duration(milliseconds: 300));
 
-    // Show the third bottom sheet
-    await showBottomSheetAndWait(
-      bottomSheet: SizedBox(
-        // height: MediaQuery.of(context).size.height * 0.4,
-        child: AppBottomsheet(
-          hasPrimaryButton: true,
-          primaryButtonText: "Continue",
-          primaryButtonOnTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    TranslateScreen(message: myProvider.message),
-              ),
-            );
-          },
-          message: "Scan Successful!",
-          title: "Scan Successful!",
-          centerContent: const ProgressIndicatorWithText(
-            progress: 1.0,
-          ),
-        ),
-      ),
-      autoDismiss: false,
-    );
-  }
+  //   // Show the third bottom sheet
+  //   await showBottomSheetAndWait(
+  //     bottomSheet: SizedBox(
+  //       // height: MediaQuery.of(context).size.height * 0.4,
+  //       child: AppBottomsheet(
+  //         hasPrimaryButton: true,
+  //         primaryButtonText: "Continue",
+  //         primaryButtonOnTap: () {
+  //           Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) =>
+  //                   TranslateScreen(message: myProvider.message),
+  //             ),
+  //           );
+  //         },
+  //         message: "Scan Successful!",
+  //         title: "Scan Successful!",
+  //         centerContent: const ProgressIndicatorWithText(
+  //           progress: 1.0,
+  //         ),
+  //       ),
+  //     ),
+  //     autoDismiss: false,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -207,26 +205,29 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                   child: PrimaryButton(
                     onTap: () {
                       Provider.of<NFCNotifier>(context, listen: false)
-                          .startNFCOperation(nfcOperation: NFCOperation.read);
-                      showSequentialBottomSheets(context);
-                      // showModalBottomSheet(
-                      //     isDismissible: false,
-                      //     context: context,
-                      //     builder: (context) {
-                      //       return SizedBox(
-                      //         height: MediaQuery.of(context).size.height * 0.4,
-                      //         child: AppBottomsheet(
-                      //           hasInactiveButton: true,
-                      //           inactiveButtonText: "Continue",
-                      //           inactiveButtonOnTap: () {},
-                      //           message:
-                      //               "Please place the back of your device near the tag receiver to read tag.",
-                      //           title: "Ready to Scan",
-                      //           centerContent: SvgPicture.asset(
-                      //               'assets/icons/svg/ready_to_scan.svg'),
-                      //         ),
-                      //       );
-                      //     });
+                          .startNFCOperation(
+                        nfcOperation: NFCOperation.read,
+                        context: context,
+                      );
+                      // showSequentialBottomSheets(context);
+                      showModalBottomSheet(
+                          isDismissible: false,
+                          context: context,
+                          builder: (context) {
+                            return SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              child: AppBottomsheet(
+                                hasInactiveButton: true,
+                                inactiveButtonText: "Continue",
+                                inactiveButtonOnTap: () {},
+                                message:
+                                    "Please place the back of your device near the tag receiver to read tag.",
+                                title: "Ready to Scan",
+                                centerContent: SvgPicture.asset(
+                                    'assets/icons/svg/ready_to_scan.svg'),
+                              ),
+                            );
+                          });
 
                       // showModalBottomSheet(
                       //     isDismissible: false,

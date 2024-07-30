@@ -2,18 +2,23 @@
 // import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 class NFCNotifier extends ChangeNotifier {
   bool _isProcessing = false;
+  bool _showProcess = false;
   String _message = "";
+  String _readContent = "";
 
   bool get isProcessing => _isProcessing;
-
+  bool get showProcess => _showProcess;
   String get message => _message;
 
   Future<void> startNFCOperation(
-      {required NFCOperation nfcOperation, String content = ""}) async {
+      {required NFCOperation nfcOperation,
+      String content = "",
+      required BuildContext context}) async {
     try {
       _isProcessing = true;
       notifyListeners();
@@ -31,9 +36,9 @@ class NFCNotifier extends ChangeNotifier {
 
         NfcManager.instance.startSession(onDiscovered: (NfcTag nfcTag) async {
           if (nfcOperation == NFCOperation.read) {
-            _readFromTag(tag: nfcTag);
+            await _readFromTag(tag: nfcTag, context: context);
           } else if (nfcOperation == NFCOperation.write) {
-            _writeToTag(nfcTag: nfcTag, content: content);
+            await _writeToTag(nfcTag: nfcTag, content: content);
             _message = "DONE";
           }
 
@@ -57,7 +62,8 @@ class NFCNotifier extends ChangeNotifier {
     }
   }
 
-  Future<void> _readFromTag({required NfcTag tag}) async {
+  Future<void> _readFromTag(
+      {required NfcTag tag, required BuildContext context}) async {
     Map<String, dynamic> nfcData = {
       'nfca': tag.data['nfca'],
       'mifareultralight': tag.data['mifareultralight'],
@@ -66,12 +72,40 @@ class NFCNotifier extends ChangeNotifier {
 
     String? decodedText;
     if (nfcData.containsKey('ndef')) {
+      // Extract the NDEF record payload
       List<int> payload =
           nfcData['ndef']['cachedMessage']?['records']?[0]['payload'];
-      decodedText = String.fromCharCodes(payload);
+
+      if (payload.isNotEmpty) {
+        // Decode the NFC text payload correctly
+        decodedText = _decodeNdefText(payload);
+        _showProcess = true;
+      }
     }
 
-    _message = decodedText ?? "No Data Found";
+    _readContent = decodedText ?? "No Data Found";
+    _message = _readContent;
+
+    // Navigate to TranslateScreen with the read content
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TranslateScreen(message: _readContent),
+      ),
+    );
+  }
+
+  String _decodeNdefText(List<int> payload) {
+    if (payload.isEmpty) return "";
+
+    // The first byte contains the status information
+    int statusByte = payload[0];
+    // Language code length is encoded in the lower 5 bits of the first byte
+    int languageCodeLength = statusByte & 0x1F;
+    // Extract the actual text, skipping the language code length
+    List<int> textBytes = payload.sublist(1 + languageCodeLength);
+
+    return String.fromCharCodes(textBytes);
   }
 
   Future<void> _writeToTag(

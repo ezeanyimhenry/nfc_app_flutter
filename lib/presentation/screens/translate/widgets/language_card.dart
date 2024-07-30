@@ -31,6 +31,7 @@ class LanguageCard extends StatelessWidget {
             style: AppTextStyle.bodyTextSemiBold,
           ),
           const YGap(value: 24),
+
           isTranslating
               ? Center(
                   child: SvgPicture.asset(
@@ -41,7 +42,8 @@ class LanguageCard extends StatelessWidget {
                     ),
                   ),
                 )
-              : Text('"${data.content}"'),
+              : Text(data.content),,
+
           Padding(
             padding: YPadding.vertical16,
             child: const Divider(

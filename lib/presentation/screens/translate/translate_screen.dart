@@ -52,7 +52,7 @@ class _TranslateScreenState extends State<TranslateScreen> {
       ];
       final content2 = [
         Content.text(
-            'Detect and display only the language of this text, no unneccessary comments, just the detected language: ${widget.message}'),
+            'Detect and display only the language of this text, no unneccessary comments, just the detected language name: ${widget.message}'),
       ];
       final response1 = await model.generateContent(content1);
       final response2 = await model.generateContent(content2);
