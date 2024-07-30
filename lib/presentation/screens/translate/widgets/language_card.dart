@@ -42,7 +42,7 @@ class LanguageCard extends StatelessWidget {
                     ),
                   ),
                 )
-              : Text(data.content),,
+              : Text(data.content),
 
           Padding(
             padding: YPadding.vertical16,
