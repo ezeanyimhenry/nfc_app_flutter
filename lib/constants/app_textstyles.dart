@@ -42,13 +42,35 @@ class AppTextStyle {
       fontSize: 14.0,
       color: AppColors.primaryTextColor,
     ),
+  ); 
+  static final alertDialogBodyTextSm = GoogleFonts.inter(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: 14.0,
+      color: AppColors.miscellaneousTextColor2,
+    ),
   );
+  static final paragraphText = GoogleFonts.inter(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: 16.0,
+      color: Colors.black,
+    ),
+  );
+
   //heading text(Bottombar)
   static final heading2 = GoogleFonts.inter(
     textStyle: const TextStyle(
       fontWeight: FontWeight.w500,
       fontSize: 20.0,
       color: AppColors.secondaryTextColor,
+    ),
+  );
+  static final heading3 = GoogleFonts.inter(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: 20.0,
+      color: AppColors.primaryTextColor,
     ),
   );
   static final primaryButtonText = GoogleFonts.inter(
@@ -68,6 +90,13 @@ class AppTextStyle {
   static final welcomeScreenHeading = GoogleFonts.lilitaOne(
     textStyle: const TextStyle(
       fontWeight: FontWeight.w400,
+      fontSize: 20.0,
+      color: AppColors.primaryTextColor,
+    ),
+  ); 
+   static final alertDialogHeading = GoogleFonts.lilitaOne(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w700,
       fontSize: 20.0,
       color: AppColors.primaryTextColor,
     ),

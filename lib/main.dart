@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => BottomNavigationProvider()),
       ],
       child: MaterialApp(
+        
         debugShowCheckedModeBanner: false,
         theme: AppThemeData.lightMode,
         home: const WelcomeScreen(),

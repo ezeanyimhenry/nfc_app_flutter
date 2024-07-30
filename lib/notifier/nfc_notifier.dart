@@ -22,7 +22,7 @@ class NFCNotifier extends ChangeNotifier {
 
       if (isAvail) {
         if (nfcOperation == NFCOperation.read) {
-          _message = "Scanning";
+          _message = "Scanning...";
         } else if (nfcOperation == NFCOperation.write) {
           _message = "Writing To Tag";
         }
