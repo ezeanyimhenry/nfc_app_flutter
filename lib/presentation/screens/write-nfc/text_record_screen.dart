@@ -23,7 +23,9 @@ class _TextRecordScreenState extends State<TextRecordScreen> {
 
   writeToNfc() {
     Provider.of<NFCNotifier>(context, listen: false).startNFCOperation(
-        nfcOperation: NFCOperation.write, content: controller.text);
+        nfcOperation: NFCOperation.write,
+        context: context,
+        content: controller.text);
     showModalBottomSheet(
         isDismissible: false,
         context: context,

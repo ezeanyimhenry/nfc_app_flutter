@@ -207,7 +207,10 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                   child: PrimaryButton(
                     onTap: () {
                       Provider.of<NFCNotifier>(context, listen: false)
-                          .startNFCOperation(nfcOperation: NFCOperation.read);
+                          .startNFCOperation(
+                        nfcOperation: NFCOperation.read,
+                        context: context,
+                      );
                       // showSequentialBottomSheets(context);
                       showModalBottomSheet(
                           isDismissible: false,
