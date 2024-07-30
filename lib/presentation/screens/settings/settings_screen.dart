@@ -118,7 +118,8 @@ class SettingsScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const TranslateScreen()),
+                              builder: (context) =>
+                                  const TranslateScreen(message: "I am a boy")),
                         );
                       },
                     ),

@@ -29,12 +29,13 @@ class _ProgressIndicatorWithTextState extends State<ProgressIndicatorWithText> {
         alignment: Alignment.center,
         children: [
           SizedBox(
-            width: 100.0,
-            height: 100.0,
+            width: 90.0,
+            height: 90.0,
             child: CircularProgressIndicator(
               value: _progress,
-              strokeWidth: 6.0,
+              strokeWidth: 10.0,
               valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+              backgroundColor: Color(0xFFF0F2F5),
             ),
           ),
           Text(

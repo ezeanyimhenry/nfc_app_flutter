@@ -9,7 +9,8 @@ import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 
 class TranslateScreen extends StatefulWidget {
-  const TranslateScreen({super.key});
+  final String message;
+  const TranslateScreen({super.key, required this.message});
 
   @override
   State<TranslateScreen> createState() => _TranslateScreenState();
@@ -33,10 +34,9 @@ class _TranslateScreenState extends State<TranslateScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const LanguageCard(
+            LanguageCard(
               data: LanguageData(
-                content:
-                    "Bienvenido al Museo de Historia. Siga las señales para iniciar su recorrido y descubra exposiciones fascinantes sobre nuestra herencia cultural.",
+                content: widget.message,
                 type: LanguageType.source,
                 name: "Spanish",
               ),

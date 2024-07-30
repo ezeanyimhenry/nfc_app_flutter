@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,6 +7,7 @@ import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
+import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
@@ -98,23 +101,91 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
     );
   }
 
-  void _showMyBottomSheet(BuildContext context) {
-    // Access the provider instance
+  Future<void> showSequentialBottomSheets(BuildContext context) async {
     final myProvider = Provider.of<NFCNotifier>(context, listen: false);
 
-    // Show the bottom sheet
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return AppBottomsheet(
-          message: "",
-          title: "Successful.",
-          centerContent: PrimaryButton(
-            onTap: () {},
-            text: myProvider.message,
-          ), // Pass provider message here
-        );
-      },
+    // Function to show a bottom sheet and wait for it to close
+    Future<void> showBottomSheetAndWait({
+      required Widget bottomSheet,
+      bool autoDismiss = true,
+    }) async {
+      final Completer<void> completer = Completer<void>();
+
+      showModalBottomSheet(
+        context: context,
+        isDismissible: !autoDismiss,
+        enableDrag: autoDismiss,
+        builder: (context) {
+          if (autoDismiss) {
+            Timer(Duration(seconds: 3), () {
+              // Close the bottom modal sheet if autoDismiss is true
+              Navigator.pop(context);
+            });
+          }
+          return bottomSheet;
+        },
+      ).whenComplete(() {
+        completer.complete();
+      });
+
+      return completer.future;
+    }
+
+    // Show the first bottom sheet
+    await showBottomSheetAndWait(
+      bottomSheet: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.4,
+        child: AppBottomsheet(
+          message:
+              "Please place the back of your device near the tag receiver to read tag.",
+          title: "Ready to Scan",
+          centerContent: SvgPicture.asset('assets/icons/svg/ready_to_scan.svg'),
+        ),
+      ),
+    );
+    // Wait for the bottom sheet to close before showing the next one
+    await Future.delayed(Duration(milliseconds: 300));
+
+    // Show the second bottom sheet
+    await showBottomSheetAndWait(
+      bottomSheet: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.4,
+        child: AppBottomsheet(
+          message: "Make sure your device is well placed.",
+          title: "Scanning...",
+          centerContent: ProgressIndicatorWithText(
+            progress: 0.75,
+          ),
+        ),
+      ),
+    );
+    // Wait for the bottom sheet to close before showing the next one
+    await Future.delayed(Duration(milliseconds: 300));
+
+    // Show the third bottom sheet
+    await showBottomSheetAndWait(
+      bottomSheet: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.4,
+        child: AppBottomsheet(
+          hasPrimaryButton: true,
+          primaryButtonText: "Continue",
+          primaryButtonOnTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    TranslateScreen(message: myProvider.message),
+              ),
+            );
+          },
+          message: "Scan Successful!",
+          title: "Scan Successful!",
+          centerContent: ProgressIndicatorWithText(
+            progress: 1.0,
+          ),
+        ),
+      ),
+      autoDismiss: false,
     );
   }
 
@@ -137,6 +208,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                     onTap: () {
                       Provider.of<NFCNotifier>(context, listen: false)
                           .startNFCOperation(nfcOperation: NFCOperation.read);
+                      showSequentialBottomSheets(context);
                       // showModalBottomSheet(
                       //     isDismissible: false,
                       //     context: context,
@@ -144,6 +216,9 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                       //       return SizedBox(
                       //         height: MediaQuery.of(context).size.height * 0.4,
                       //         child: AppBottomsheet(
+                      //           hasInactiveButton: true,
+                      //           inactiveButtonText: "Continue",
+                      //           inactiveButtonOnTap: () {},
                       //           message:
                       //               "Please place the back of your device near the tag receiver to read tag.",
                       //           title: "Ready to Scan",
@@ -153,22 +228,48 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                       //       );
                       //     });
 
-                      showModalBottomSheet(
-                          isDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.4,
-                              child: const AppBottomsheet(
-                                message:
-                                    "Make sure your device is well placed.",
-                                title: "Scanning...",
-                                centerContent: ProgressIndicatorWithText(
-                                  progress: 0.75,
-                                ),
-                              ),
-                            );
-                          });
+                      // showModalBottomSheet(
+                      //     isDismissible: false,
+                      //     context: context,
+                      //     builder: (context) {
+                      //       return SizedBox(
+                      //         height: MediaQuery.of(context).size.height * 0.4,
+                      //         child: AppBottomsheet(
+                      //           message:
+                      //               "Make sure your device is well placed.",
+                      //           title: "Scanning...",
+                      //           centerContent: ProgressIndicatorWithText(
+                      //             progress: 0.75,
+                      //           ),
+                      //         ),
+                      //       );
+                      //     });
+
+                      // showModalBottomSheet(
+                      //     isDismissible: false,
+                      //     context: context,
+                      //     builder: (context) {
+                      //       return SizedBox(
+                      //         height: MediaQuery.of(context).size.height * 0.4,
+                      //         child: AppBottomsheet(
+                      //           hasPrimaryButton: true,
+                      //           primaryButtonText: "Continue",
+                      //           primaryButtonOnTap: () {
+                      //             Navigator.push(
+                      //                 context,
+                      //                 MaterialPageRoute(
+                      //                     builder: (txt) =>
+                      //                         const TranslateScreen()));
+                      //           },
+                      //           message:
+                      //               "Make sure your device is well placed.",
+                      //           title: "Scan Successful!",
+                      //           centerContent: ProgressIndicatorWithText(
+                      //             progress: 1.0,
+                      //           ),
+                      //         ),
+                      //       );
+                      //     });
                     },
                     text: 'Scan NFC tag',
                   ),
@@ -183,13 +284,17 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                   if (provider.isProcessing) {
                     // return const CircularProgressIndicator();
                     showModalBottomSheet(
+                        isDismissible: false,
                         context: context,
                         builder: (context) {
-                          return const AppBottomsheet(
-                            message: "Make sure your device is well placed.",
-                            title: "Scanning...",
-                            centerContent: ProgressIndicatorWithText(
-                              progress: 0.75,
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.4,
+                            child: const AppBottomsheet(
+                              message: "Make sure your device is well placed.",
+                              title: "Scanning...",
+                              centerContent: ProgressIndicatorWithText(
+                                progress: 0.75,
+                              ),
                             ),
                           );
                         });
@@ -197,26 +302,31 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                   if (provider.message.isNotEmpty) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       Navigator.pop(context);
-                      // showResultDialog(context, provider.message);
-                      _showMyBottomSheet(context);
-                      // showDialog(
-                      //   context: context,
-                      //   barrierDismissible: false,
-                      //   builder: (BuildContext context) {
-                      //     return AlertDialog(
-                      //       title: const Text('Result'),
-                      //       content: Text(provider.message),
-                      //       actions: [
-                      //         ElevatedButton(
-                      //           onPressed: () {
-                      //             Navigator.of(context).pop();
-                      //           },
-                      //           child: const Text('OK'),
-                      //         ),
-                      //       ],
-                      //     );
-                      //   },
-                      // );
+                      showModalBottomSheet(
+                          isDismissible: false,
+                          context: context,
+                          builder: (context) {
+                            return SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              child: AppBottomsheet(
+                                hasPrimaryButton: true,
+                                primaryButtonText: "Continue",
+                                primaryButtonOnTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (txt) => TranslateScreen(
+                                              message: provider.message)));
+                                },
+                                message:
+                                    "Make sure your device is well placed.",
+                                title: "Scan Successful!",
+                                centerContent: ProgressIndicatorWithText(
+                                  progress: 1.0,
+                                ),
+                              ),
+                            );
+                          });
                     });
                   }
                   return const SizedBox();
