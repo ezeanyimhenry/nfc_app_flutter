@@ -72,22 +72,40 @@ class NFCNotifier extends ChangeNotifier {
 
     String? decodedText;
     if (nfcData.containsKey('ndef')) {
+      // Extract the NDEF record payload
       List<int> payload =
           nfcData['ndef']['cachedMessage']?['records']?[0]['payload'];
-      decodedText = String.fromCharCodes(payload);
-      _showProcess = true;
+
+      if (payload.isNotEmpty) {
+        // Decode the NFC text payload correctly
+        decodedText = _decodeNdefText(payload);
+        _showProcess = true;
+      }
     }
 
     _readContent = decodedText ?? "No Data Found";
     _message = _readContent;
 
-    // Navigate to ContentPage with the read content
+    // Navigate to TranslateScreen with the read content
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TranslateScreen(message: _readContent),
       ),
     );
+  }
+
+  String _decodeNdefText(List<int> payload) {
+    if (payload.isEmpty) return "";
+
+    // The first byte contains the status information
+    int statusByte = payload[0];
+    // Language code length is encoded in the lower 5 bits of the first byte
+    int languageCodeLength = statusByte & 0x1F;
+    // Extract the actual text, skipping the language code length
+    List<int> textBytes = payload.sublist(1 + languageCodeLength);
+
+    return String.fromCharCodes(textBytes);
   }
 
   Future<void> _writeToTag(
