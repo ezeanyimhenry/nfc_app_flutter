@@ -9,10 +9,6 @@ Future<String?> showLanguageSelectionSheet(
   BuildContext context,
 ) async {
   final searchController = TextEditingController();
-  final outlineBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(12),
-    borderSide: const BorderSide(color: AppColors.dividerColour),
-  );
 
   return showModalBottomSheet<String>(
       context: context,
@@ -29,7 +25,6 @@ Future<String?> showLanguageSelectionSheet(
                 double.infinity,
                 MediaQuery.sizeOf(context).height * 0.56,
               )),
-              // height: MediaQuery.sizeOf(context).height * 0.56,
               padding: const EdgeInsets.all(16),
               child: SingleChildScrollView(
                 child: Column(children: [
@@ -39,8 +34,10 @@ Future<String?> showLanguageSelectionSheet(
                       languageNotifier.filterLanguage(input);
                     },
                     decoration: InputDecoration(
-                        enabledBorder: outlineBorder,
-                        focusedBorder: outlineBorder),
+                      hintText: "Search language",
+                      enabledBorder: outlineBorder(),
+                      focusedBorder: outlineBorder(AppColors.primaryColor),
+                    ),
                   ),
                   const YGap(
                     value: 8,
@@ -124,3 +121,8 @@ Future<String?> showLanguageSelectionSheet(
         });
       });
 }
+
+OutlineInputBorder outlineBorder([Color? borderColor]) => OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: borderColor ?? AppColors.dividerColour),
+    );
