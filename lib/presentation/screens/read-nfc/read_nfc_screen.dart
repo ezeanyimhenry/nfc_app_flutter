@@ -284,7 +284,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                   style: TextStyle(fontSize: 16.0),
                 ),
                 Consumer<NFCNotifier>(builder: (context, provider, _) {
-                  if (provider.showProcess) {
+                  if (provider.isProcessing) {
                     // return const CircularProgressIndicator();
                     showModalBottomSheet(
                         isDismissible: false,

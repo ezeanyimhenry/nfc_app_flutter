@@ -21,9 +21,8 @@ class NFCNotifier extends ChangeNotifier {
       _isProcessing = true;
       notifyListeners();
 
-      bool isAvail = await NfcManager.instance.isAvailable();
-
-      if (isAvail) {
+      // Ensure NFC Manager is available
+      if (await NfcManager.instance.isAvailable()) {
         if (nfcOperation == NFCOperation.read) {
           _message = "Scanning...";
         } else if (nfcOperation == NFCOperation.write) {
@@ -42,6 +41,8 @@ class NFCNotifier extends ChangeNotifier {
                 await _writeToTag(nfcTag: nfcTag, content: content);
                 _message = "DONE";
               }
+            } catch (e) {
+              _message = e.toString();
             } finally {
               // Ensure session is stopped after operation completes
               _isProcessing = false;
