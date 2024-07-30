@@ -4,8 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
+import 'package:nfc_app/notifier/nfc_notifier.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
+import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
+import 'package:provider/provider.dart';
 
 class ReadNFCScreen extends StatefulWidget {
   const ReadNFCScreen({super.key});
@@ -95,41 +98,131 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
     );
   }
 
+  void _showMyBottomSheet(BuildContext context) {
+    // Access the provider instance
+    final myProvider = Provider.of<NFCNotifier>(context, listen: false);
+
+    // Show the bottom sheet
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return AppBottomsheet(
+          message: "",
+          title: "Successful.",
+          centerContent: PrimaryButton(
+            onTap: () {},
+            text: myProvider.message,
+          ), // Pass provider message here
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: XPadding.horizontal24,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset('assets/icons/svg/hand_search_signal.svg'),
-              const YGap(),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.6,
-                child: PrimaryButton(
-                  onTap: () {
+    return ChangeNotifierProvider(
+      create: (context) => NFCNotifier(),
+      child: Scaffold(
+        body: Center(
+          child: Padding(
+            padding: XPadding.horizontal24,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset('assets/icons/svg/hand_search_signal.svg'),
+                const YGap(),
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width * 0.6,
+                  child: PrimaryButton(
+                    onTap: () {
+                      Provider.of<NFCNotifier>(context, listen: false)
+                          .startNFCOperation(nfcOperation: NFCOperation.read);
+                      // showModalBottomSheet(
+                      //     isDismissible: false,
+                      //     context: context,
+                      //     builder: (context) {
+                      //       return SizedBox(
+                      //         height: MediaQuery.of(context).size.height * 0.4,
+                      //         child: AppBottomsheet(
+                      //           message:
+                      //               "Please place the back of your device near the tag receiver to read tag.",
+                      //           title: "Ready to Scan",
+                      //           centerContent: SvgPicture.asset(
+                      //               'assets/icons/svg/ready_to_scan.svg'),
+                      //         ),
+                      //       );
+                      //     });
+
+                      showModalBottomSheet(
+                          isDismissible: false,
+                          context: context,
+                          builder: (context) {
+                            return SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              child: const AppBottomsheet(
+                                message:
+                                    "Make sure your device is well placed.",
+                                title: "Scanning...",
+                                centerContent: ProgressIndicatorWithText(
+                                  progress: 0.75,
+                                ),
+                              ),
+                            );
+                          });
+                    },
+                    text: 'Scan NFC tag',
+                  ),
+                ),
+                const YGap(),
+                const Text(
+                  'Please place the top of your device near the tag receiver',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                Consumer<NFCNotifier>(builder: (context, provider, _) {
+                  if (provider.isProcessing) {
+                    // return const CircularProgressIndicator();
                     showModalBottomSheet(
                         context: context,
                         builder: (context) {
                           return const AppBottomsheet(
-                            message: "This is the message",
-                            title: "Select Target Language",
-                            centerContent: Column(children: [Text('Test')]),
+                            message: "Make sure your device is well placed.",
+                            title: "Scanning...",
+                            centerContent: ProgressIndicatorWithText(
+                              progress: 0.75,
+                            ),
                           );
                         });
-                  },
-                  text: 'Scan NFC tag',
-                ),
-              ),
-              const YGap(),
-              const Text(
-                'Please place the top of your device near the tag receiver',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16.0),
-              ),
-            ],
+                  }
+                  if (provider.message.isNotEmpty) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Navigator.pop(context);
+                      // showResultDialog(context, provider.message);
+                      _showMyBottomSheet(context);
+                      // showDialog(
+                      //   context: context,
+                      //   barrierDismissible: false,
+                      //   builder: (BuildContext context) {
+                      //     return AlertDialog(
+                      //       title: const Text('Result'),
+                      //       content: Text(provider.message),
+                      //       actions: [
+                      //         ElevatedButton(
+                      //           onPressed: () {
+                      //             Navigator.of(context).pop();
+                      //           },
+                      //           child: const Text('OK'),
+                      //         ),
+                      //       ],
+                      //     );
+                      //   },
+                      // );
+                    });
+                  }
+                  return const SizedBox();
+                }),
+              ],
+            ),
           ),
         ),
       ),
