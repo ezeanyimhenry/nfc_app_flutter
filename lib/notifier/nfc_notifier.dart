@@ -1,6 +1,9 @@
+// import 'dart:convert';
+// import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 
 class NFCNotifier extends ChangeNotifier {
   bool _isProcessing = false;
@@ -12,17 +15,17 @@ class NFCNotifier extends ChangeNotifier {
   bool get showProcess => _showProcess;
   String get message => _message;
 
-  Future<void> startNFCOperation({
-    required NFCOperation nfcOperation,
-    String content = "",
-    required BuildContext context,
-  }) async {
+  Future<void> startNFCOperation(
+      {required NFCOperation nfcOperation,
+      String content = "",
+      required BuildContext context}) async {
     try {
       _isProcessing = true;
       notifyListeners();
 
-      // Ensure NFC Manager is available
-      if (await NfcManager.instance.isAvailable()) {
+      bool isAvail = await NfcManager.instance.isAvailable();
+
+      if (isAvail) {
         if (nfcOperation == NFCOperation.read) {
           _message = "Scanning...";
         } else if (nfcOperation == NFCOperation.write) {
@@ -31,33 +34,22 @@ class NFCNotifier extends ChangeNotifier {
 
         notifyListeners();
 
-        // Start NFC session
-        await NfcManager.instance.startSession(
-          onDiscovered: (NfcTag nfcTag) async {
-            try {
-              if (nfcOperation == NFCOperation.read) {
-                await _readFromTag(tag: nfcTag, context: context);
-              } else if (nfcOperation == NFCOperation.write) {
-                await _writeToTag(nfcTag: nfcTag, content: content);
-                _message = "DONE";
-              }
-            } catch (e) {
-              _message = e.toString();
-            } finally {
-              // Ensure session is stopped after operation completes
-              _isProcessing = false;
-              notifyListeners();
-              await NfcManager.instance.stopSession();
-            }
-          },
-          onError: (e) async {
-            // Handle error and stop session
-            _isProcessing = false;
-            _message = e.toString();
-            notifyListeners();
-            await NfcManager.instance.stopSession();
-          },
-        );
+        NfcManager.instance.startSession(onDiscovered: (NfcTag nfcTag) async {
+          if (nfcOperation == NFCOperation.read) {
+            await _readFromTag(tag: nfcTag, context: context);
+          } else if (nfcOperation == NFCOperation.write) {
+            await _writeToTag(nfcTag: nfcTag, content: content);
+            _message = "DONE";
+          }
+
+          _isProcessing = false;
+          notifyListeners();
+          await NfcManager.instance.stopSession();
+        }, onError: (e) async {
+          _isProcessing = false;
+          _message = e.toString();
+          notifyListeners();
+        });
       } else {
         _isProcessing = false;
         _message = "Please Enable NFC From Settings";
@@ -70,10 +62,8 @@ class NFCNotifier extends ChangeNotifier {
     }
   }
 
-  Future<void> _readFromTag({
-    required NfcTag tag,
-    required BuildContext context,
-  }) async {
+  Future<void> _readFromTag(
+      {required NfcTag tag, required BuildContext context}) async {
     Map<String, dynamic> nfcData = {
       'nfca': tag.data['nfca'],
       'mifareultralight': tag.data['mifareultralight'],
@@ -91,7 +81,7 @@ class NFCNotifier extends ChangeNotifier {
     _readContent = decodedText ?? "No Data Found";
     _message = _readContent;
 
-    // Navigate to TranslateScreen with the read content
+    // Navigate to ContentPage with the read content
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -100,10 +90,8 @@ class NFCNotifier extends ChangeNotifier {
     );
   }
 
-  Future<void> _writeToTag({
-    required NfcTag nfcTag,
-    required String content,
-  }) async {
+  Future<void> _writeToTag(
+      {required NfcTag nfcTag, required String content}) async {
     NdefMessage message = _createNdefMessage(content: content);
     await Ndef.from(nfcTag)?.write(message);
   }
