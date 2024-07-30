@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_app/constants/app_textstyles.dart';
 
 class ProgressIndicatorWithText extends StatefulWidget {
   final double progress; // Value between 0.0 and 1.0 (0 to 100%)
 
   const ProgressIndicatorWithText({
-    Key? key,
+    super.key,
     required this.progress,
-  }) : super(key: key);
+  });
 
   @override
-  _ProgressIndicatorWithTextState createState() =>
-      _ProgressIndicatorWithTextState();
+  ProgressIndicatorWithTextState createState() =>
+      ProgressIndicatorWithTextState();
 }
 
-class _ProgressIndicatorWithTextState extends State<ProgressIndicatorWithText> {
+class ProgressIndicatorWithTextState extends State<ProgressIndicatorWithText> {
   double _progress = 0.5;
 
   void updateProgress(double progress) {
@@ -34,17 +35,13 @@ class _ProgressIndicatorWithTextState extends State<ProgressIndicatorWithText> {
             child: CircularProgressIndicator(
               value: _progress,
               strokeWidth: 10.0,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-              backgroundColor: Color(0xFFF0F2F5),
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+              backgroundColor: const Color(0xFFF0F2F5),
             ),
           ),
           Text(
             '${(_progress * 100).toStringAsFixed(0)}%',
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+            style: AppTextStyle.paragraphText,
           ),
         ],
       ),

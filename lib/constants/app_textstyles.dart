@@ -43,6 +43,14 @@ class AppTextStyle {
       color: AppColors.primaryTextColor,
     ),
   );
+  static final paragraphText = GoogleFonts.inter(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: 16.0,
+      color: Colors.black,
+    ),
+  );
+
   //heading text(Bottombar)
   static final heading2 = GoogleFonts.inter(
     textStyle: const TextStyle(
@@ -50,7 +58,8 @@ class AppTextStyle {
       fontSize: 20.0,
       color: AppColors.secondaryTextColor,
     ),
-  ); static final heading3 = GoogleFonts.inter(
+  );
+  static final heading3 = GoogleFonts.inter(
     textStyle: const TextStyle(
       fontWeight: FontWeight.w600,
       fontSize: 20.0,

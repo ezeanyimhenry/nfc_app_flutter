@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:nfc_app/constants/app_colors.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
-import 'package:nfc_app/constants/app_textstyles.dart';
+// import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
 import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
@@ -21,85 +21,85 @@ class ReadNFCScreen extends StatefulWidget {
 }
 
 class _ReadNFCScreenState extends State<ReadNFCScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showPermissionDialog();
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     _showPermissionDialog();
+  //   });
+  // }
 
-  void _showPermissionDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: XPadding.horizontal16,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              YGap(value: MediaQuery.sizeOf(context).height * 0.041),
-              Text(
-                'To provide the best experience,\nwe need to access certain features on your device.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.inter(
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 18.0,
-                    color: AppColors.primaryTextColor,
-                  ),
-                ),
-              ),
-              const YGap(value: 20),
-              Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      //  const Icon(Icons.nfc),
-                      const XGap(value: 10),
-                      Expanded(
-                        child: Text(
-                          'NFC Access\nRequired to scan NFC tags',
-                          style: AppTextStyle.bodyText,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const YGap(value: 10),
-                  Row(
-                    children: [
-                      // const Icon(Icons.wifi),
-                      const XGap(value: 10),
-                      Expanded(
-                        child: Text(
-                          'Internet Access\nNeeded for real-time translation',
-                          style: AppTextStyle.bodyText,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20.0),
-              PrimaryButton(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                text: 'Allow',
-              ),
-              YGap(value: MediaQuery.sizeOf(context).height * 0.02),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // void _showPermissionDialog() {
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         contentPadding: XPadding.horizontal16,
+  //         shape:
+  //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  //         content: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             YGap(value: MediaQuery.sizeOf(context).height * 0.041),
+  //             Text(
+  //               'To provide the best experience,\nwe need to access certain features on your device.',
+  //               textAlign: TextAlign.center,
+  //               style: GoogleFonts.inter(
+  //                 textStyle: const TextStyle(
+  //                   fontWeight: FontWeight.w500,
+  //                   fontSize: 18.0,
+  //                   color: AppColors.primaryTextColor,
+  //                 ),
+  //               ),
+  //             ),
+  //             const YGap(value: 20),
+  //             Column(
+  //               // crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Row(
+  //                   children: [
+  //                     //  const Icon(Icons.nfc),
+  //                     const XGap(value: 10),
+  //                     Expanded(
+  //                       child: Text(
+  //                         'NFC Access\nRequired to scan NFC tags',
+  //                         style: AppTextStyle.bodyText,
+  //                         textAlign: TextAlign.center,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //                 const YGap(value: 10),
+  //                 Row(
+  //                   children: [
+  //                     // const Icon(Icons.wifi),
+  //                     const XGap(value: 10),
+  //                     Expanded(
+  //                       child: Text(
+  //                         'Internet Access\nNeeded for real-time translation',
+  //                         style: AppTextStyle.bodyText,
+  //                         textAlign: TextAlign.center,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ],
+  //             ),
+  //             const SizedBox(height: 20.0),
+  //             PrimaryButton(
+  //               onTap: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //               text: 'Allow',
+  //             ),
+  //             YGap(value: MediaQuery.sizeOf(context).height * 0.02),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   Future<void> showSequentialBottomSheets(BuildContext context) async {
     final myProvider = Provider.of<NFCNotifier>(context, listen: false);
@@ -117,7 +117,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
         enableDrag: autoDismiss,
         builder: (context) {
           if (autoDismiss) {
-            Timer(Duration(seconds: 3), () {
+            Timer(const Duration(seconds: 3), () {
               // Close the bottom modal sheet if autoDismiss is true
               Navigator.pop(context);
             });
@@ -144,12 +144,12 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
       ),
     );
     // Wait for the bottom sheet to close before showing the next one
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 300));
 
     // Show the second bottom sheet
     await showBottomSheetAndWait(
-      bottomSheet: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.4,
+      bottomSheet: const SizedBox(
+        // height: MediaQuery.of(context).size.height * 0.4,
         child: AppBottomsheet(
           message: "Make sure your device is well placed.",
           title: "Scanning...",
@@ -160,12 +160,12 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
       ),
     );
     // Wait for the bottom sheet to close before showing the next one
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 300));
 
     // Show the third bottom sheet
     await showBottomSheetAndWait(
       bottomSheet: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.4,
+        // height: MediaQuery.of(context).size.height * 0.4,
         child: AppBottomsheet(
           hasPrimaryButton: true,
           primaryButtonText: "Continue",
@@ -180,7 +180,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
           },
           message: "Scan Successful!",
           title: "Scan Successful!",
-          centerContent: ProgressIndicatorWithText(
+          centerContent: const ProgressIndicatorWithText(
             progress: 1.0,
           ),
         ),
@@ -321,7 +321,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                                 message:
                                     "Make sure your device is well placed.",
                                 title: "Scan Successful!",
-                                centerContent: ProgressIndicatorWithText(
+                                centerContent: const ProgressIndicatorWithText(
                                   progress: 1.0,
                                 ),
                               ),
