@@ -130,7 +130,7 @@ class HistoryScreen extends StatelessWidget {
                             return AlertDialog(
                               // titleTextStyle: AppTextStyle.alertDialogHeading,
                               contentPadding: AllPadding.padding16,
-                              title: Container(
+                              title: SizedBox(
                                 width: double.infinity,
                                 child: Stack(
                                   // mainAxisAlignment: MainAxisAlignment.center,
