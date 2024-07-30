@@ -300,7 +300,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                           );
                         });
                   }
-                  if (provider.message.isNotEmpty) {
+                  if (provider.readContent.isNotEmpty) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       Navigator.pop(context);
                       showModalBottomSheet(

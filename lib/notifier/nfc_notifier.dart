@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
+// import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 class NFCNotifier extends ChangeNotifier {
@@ -11,6 +11,7 @@ class NFCNotifier extends ChangeNotifier {
   bool get isProcessing => _isProcessing;
   bool get showProcess => _showProcess;
   String get message => _message;
+  String get readContent => _readContent;
 
   Future<void> startNFCOperation({
     required NFCOperation nfcOperation,
@@ -75,17 +76,17 @@ class NFCNotifier extends ChangeNotifier {
     }
 
     _readContent = decodedText ?? "No Data Found";
-    _message = _readContent;
+    // _message = _readContent;
     notifyListeners();
 
-    if (decodedText != null && decodedText.isNotEmpty) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TranslateScreen(message: _readContent),
-        ),
-      );
-    }
+    // if (decodedText != null && decodedText.isNotEmpty) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => TranslateScreen(message: _readContent),
+    //     ),
+    //   );
+    // }
   }
 
   String _decodeNdefText(List<int> payload) {
