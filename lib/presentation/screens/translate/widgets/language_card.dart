@@ -34,9 +34,13 @@ class LanguageCard extends StatelessWidget {
           isTranslating
               ? Center(
                   child: SvgPicture.asset(
-                  AppSvgs.loader,
-                  color: AppColors.primaryColor,
-                ))
+                    AppSvgs.loader,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.primaryColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                )
               : Text('"${data.content}"'),
           Padding(
             padding: YPadding.vertical16,
