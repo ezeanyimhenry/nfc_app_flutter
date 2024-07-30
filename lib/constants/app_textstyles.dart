@@ -42,6 +42,13 @@ class AppTextStyle {
       fontSize: 14.0,
       color: AppColors.primaryTextColor,
     ),
+  ); 
+  static final alertDialogBodyTextSm = GoogleFonts.inter(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: 14.0,
+      color: AppColors.miscellaneousTextColor2,
+    ),
   );
   static final paragraphText = GoogleFonts.inter(
     textStyle: const TextStyle(
@@ -83,6 +90,13 @@ class AppTextStyle {
   static final welcomeScreenHeading = GoogleFonts.lilitaOne(
     textStyle: const TextStyle(
       fontWeight: FontWeight.w400,
+      fontSize: 20.0,
+      color: AppColors.primaryTextColor,
+    ),
+  ); 
+   static final alertDialogHeading = GoogleFonts.lilitaOne(
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w700,
       fontSize: 20.0,
       color: AppColors.primaryTextColor,
     ),

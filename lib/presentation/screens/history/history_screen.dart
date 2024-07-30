@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nfc_app/constants/app_colors.dart';
 
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
@@ -68,7 +69,9 @@ class HistoryScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SvgPicture.asset("assets/icons/svg/filter.svg"),
+                  GestureDetector(
+                      onTap: () {},
+                      child: SvgPicture.asset("assets/icons/svg/filter.svg")),
                 ],
               ),
             ),
@@ -107,12 +110,81 @@ class HistoryScreen extends StatelessWidget {
             ),
             Expanded(
                 child: ListView.separated(
-              itemCount: 10,
+              itemCount: fruits.length,
               itemBuilder: (ctx, index) {
                 return Dismissible(
                     key: Key(
-                      index.toString(),
+                      fruits[index],
                     ),
+                    onDismissed: (direction) {
+                      // Perform delete action here
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Item deleted')),
+                      );
+                    },
+                    confirmDismiss: (direction) async {
+                      return await showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (ctx) {
+                            return AlertDialog(
+                              // titleTextStyle: AppTextStyle.alertDialogHeading,
+                              contentPadding: AllPadding.padding16,
+                              title: SizedBox(
+                                width: double.infinity,
+                                child: Stack(
+                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Are you sure?",
+                                        style: AppTextStyle.alertDialogHeading,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      child: GestureDetector(
+                                        onTap: () =>
+                                            Navigator.of(context).pop(false),
+                                        child: SvgPicture.asset(
+                                            "assets/icons/svg/cancel.svg"),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              content: Text(
+                                "This will delete this record permanently. You cannot undo this action.",
+                                style: AppTextStyle.alertDialogBodyTextSm,
+                                textAlign: TextAlign.center,
+                              ),
+                              actions: [
+                                GestureDetector(
+                                  onTap: () {
+                                    fruits.remove(fruits[index]);
+                                    Navigator.of(context).pop(true);
+                                  },
+                                  child: Container(
+                                    height: MediaQuery.sizeOf(context).height *
+                                        0.06,
+                                    width: MediaQuery.sizeOf(context).width,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.alertDialogColor,
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    child: Center(
+                                      child: Text(
+                                        "Delete",
+                                        style: AppTextStyle.primaryButtonText,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          });
+                    },
                     direction: DismissDirection.endToStart,
                     background: Container(
                       height: MediaQuery.sizeOf(context).height * 0.28,
@@ -137,3 +209,16 @@ class HistoryScreen extends StatelessWidget {
     );
   }
 }
+
+List<String> fruits = [
+  'Apple',
+  'Banana',
+  'Cherry',
+  'Date',
+  'Elderberry',
+  'Fig',
+  'Grape',
+  'Honeydew',
+  'Kiwi',
+  'Lemon'
+];
