@@ -9,6 +9,7 @@ import 'package:nfc_app/presentation/screens/translate/widgets/language_card.dar
 import 'package:nfc_app/presentation/screens/translate/widgets/select_language_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
+import 'package:nfc_app/presentation/widgets/select_language_sheet.dart';
 
 class TranslateScreen extends StatefulWidget {
   final String message;
@@ -78,6 +79,7 @@ class _TranslateScreenState extends State<TranslateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -130,19 +132,13 @@ class _TranslateScreenState extends State<TranslateScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return const AppBottomsheet(
-                            message: "",
-                            title: "Select Target Language",
-                            centerContent: SelectTargetLanguageSheet(),
-                          );
-                        }).then((selected) {
+
+                    showLanguageSelectionSheet(context).then((selected) {
                       setState(() {
                         _selectedLanguage = selected;
                       });
                     });
+                    
                   },
                   child: Row(
                     children: [
