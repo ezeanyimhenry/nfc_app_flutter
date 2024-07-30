@@ -20,14 +20,15 @@ class LanguageCard extends StatelessWidget {
         border: Border.all(color: sidebarColor),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             "${data.type.label} Language - ${data.name}",
             style: AppTextStyle.bodyTextSemiBold,
           ),
           const YGap(value: 24),
-          Text('"${data.content}"'),
+          Text(data.content),
           Padding(
             padding: YPadding.vertical16,
             child: const Divider(
