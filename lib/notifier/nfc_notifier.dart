@@ -6,9 +6,11 @@ import 'package:nfc_manager/nfc_manager.dart';
 
 class NFCNotifier extends ChangeNotifier {
   bool _isProcessing = false;
+  bool _showProcess = false;
   String _message = "";
 
   bool get isProcessing => _isProcessing;
+  bool get showProcess => _showProcess;
 
   String get message => _message;
 
@@ -69,6 +71,7 @@ class NFCNotifier extends ChangeNotifier {
       List<int> payload =
           nfcData['ndef']['cachedMessage']?['records']?[0]['payload'];
       decodedText = String.fromCharCodes(payload);
+      _showProcess = true;
     }
 
     _message = decodedText ?? "No Data Found";

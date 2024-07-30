@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
-import 'package:nfc_app/presentation/screens/text_record_screen.dart';
+import 'package:nfc_app/presentation/screens/write-nfc/text_record_screen.dart';
 
 class AddRecordScreen extends StatelessWidget {
   const AddRecordScreen({super.key});

@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
-import 'package:nfc_app/presentation/screens/add_record_screen.dart';
+import 'package:nfc_app/presentation/screens/write-nfc/add_record_screen.dart';
 import 'package:nfc_app/presentation/screens/home.dart';
 import 'package:nfc_app/presentation/screens/watch_demo_screen.dart';
 
