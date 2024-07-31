@@ -54,7 +54,7 @@ class _TranslateScreenState extends State<TranslateScreen> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
-        title:  Text(
+        title: Text(
           "Translate",
           style: AppTextStyle.heading3,
         ),
@@ -113,7 +113,9 @@ class _TranslateScreenState extends State<TranslateScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                    showLanguageSelectionSheet(context).then((selected) {
+                    showLanguageSelectionSheet(
+                            context, languageNotifier.languageToBeTranslatedTo)
+                        .then((selected) {
                       languageNotifier.setTargetLanguage(selected ??
                           languageNotifier.languageToBeTranslatedTo);
                       translateReadMessage();
@@ -164,4 +166,3 @@ class _TranslateScreenState extends State<TranslateScreen> {
     );
   }
 }
-
