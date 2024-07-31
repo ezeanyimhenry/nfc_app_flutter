@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_app/notifier/nfc_broadcast_receiver.dart';
+import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
+import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
+import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 class NFCNotifier extends ChangeNotifier {
@@ -96,14 +99,34 @@ class NFCNotifier extends ChangeNotifier {
     // _message = _readContent;
     notifyListeners();
 
-    // if (decodedText != null && decodedText.isNotEmpty) {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => TranslateScreen(message: _readContent),
-    //     ),
-    //   );
-    // }
+    if (decodedText != null && decodedText.isNotEmpty) {
+      showModalBottomSheet(
+        isDismissible: false,
+        context: context,
+        builder: (context) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: AppBottomsheet(
+              hasPrimaryButton: true,
+              primaryButtonText: "Continue",
+              primaryButtonOnTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TranslateScreen(message: message),
+                  ),
+                );
+              },
+              message: "Make sure your device is well placed.",
+              title: "Scan Successful!",
+              centerContent: const ProgressIndicatorWithText(
+                progress: 1.0,
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 
   String _decodeNdefText(List<int> payload) {

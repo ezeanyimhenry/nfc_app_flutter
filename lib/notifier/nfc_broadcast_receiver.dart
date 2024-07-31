@@ -18,8 +18,7 @@ class NfcBroadcastReceiver {
         // Prevent default action by sending a broadcast
         final AndroidIntent intent = AndroidIntent(
           action: 'android.intent.action.VIEW',
-          data: Uri.parse('com.example.nfc_app')
-              .toString(), // Replace with your app scheme
+          data: Uri.parse('http://www.example.com').toString(),
           package: 'com.example.nfc_app',
           componentName: 'com.example.nfc_app/.MainActivity',
           flags: <int>[Flag.FLAG_ACTIVITY_NEW_TASK],
