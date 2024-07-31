@@ -9,6 +9,7 @@ import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:provider/provider.dart';
 
 import '../history/logic/shared_preference.dart';
@@ -22,6 +23,22 @@ class TextRecordScreen extends StatefulWidget {
 
 class _TextRecordScreenState extends State<TextRecordScreen> {
   final controller = TextEditingController();
+  bool _nfcEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkNFCAvailability();
+  }
+
+  Future<void> _checkNFCAvailability() async {
+    bool isAvailable = await NfcManager.instance.isAvailable();
+    if (mounted) {
+      setState(() {
+        _nfcEnabled = isAvailable;
+      });
+    }
+  }
 
   writeToNfc() {
     Provider.of<NFCNotifier>(context, listen: false).startNFCOperation(
@@ -119,17 +136,40 @@ class _TextRecordScreenState extends State<TextRecordScreen> {
               const YGap(value: 16.0),
               PrimaryButton(
                   onTap: () async {
-                    writeToNfc();
-                    //save to history
-                    List<HistoryModel> loadedHistoryList =
-                        await AppSharedPreference().getHistoryList();
-                    loadedHistoryList.add(HistoryModel(
-                        language: "English",
-                        date: DateTime.now(),
-                        actualText: controller.text,
-                        type: HistoryType.written));
-                    await AppSharedPreference()
-                        .saveHistoryList(loadedHistoryList);
+                    if (_nfcEnabled) {
+                      writeToNfc();
+                      //save to history
+                      List<HistoryModel> loadedHistoryList =
+                          await AppSharedPreference().getHistoryList();
+                      loadedHistoryList.add(HistoryModel(
+                          language: "English",
+                          date: DateTime.now(),
+                          actualText: controller.text,
+                          type: HistoryType.written));
+                      await AppSharedPreference()
+                          .saveHistoryList(loadedHistoryList);
+                    } else {
+                      showModalBottomSheet(
+                          isDismissible: false,
+                          context: context,
+                          builder: (context) {
+                            return SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              child: AppBottomsheet(
+                                message:
+                                    "Failed to write data to the NFC tag. Please try again.",
+                                title: "Write Operation Failed",
+                                centerContent: SvgPicture.asset(
+                                    'assets/icons/svg/nfc_unavailable.svg'),
+                                hasPrimaryButton: true,
+                                primaryButtonText: 'Try Again',
+                                primaryButtonOnTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            );
+                          });
+                    }
                   },
                   text: 'Add'),
               Consumer<NFCNotifier>(builder: (context, provider, _) {
