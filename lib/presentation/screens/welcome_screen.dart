@@ -23,11 +23,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgPicture.asset('assets/icons/svg/welcomescreen_icon.svg'),
+              Text(
+                'Breaking \n Language Barriers',
+                textAlign: TextAlign.center,
+                style: AppTextStyle.welcomeScreenHeading,
+              ),
+              const SizedBox(height: 20),
+              SvgPicture.asset('assets/icons/svg/homescreen_svg.svg'),
               const YGap(),
               Text(
-                'Welcome to Translate Buddy',
-                style: AppTextStyle.welcomeScreenHeading,
+                'Effortlessly translate text on NFC tags to your preferred language. Simply tap to scan, and let us handle the rest.',
+                textAlign: TextAlign.center,
+                style: AppTextStyle.bodyTextSm,
               ),
               const SizedBox(height: 50),
               SizedBox(
