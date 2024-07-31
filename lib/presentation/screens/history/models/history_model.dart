@@ -1,4 +1,4 @@
-enum HistoryType { Read, Written }
+enum HistoryType { read, written }
 
 class HistoryModel {
   final String language;
@@ -29,7 +29,8 @@ class HistoryModel {
       language: json['language'],
       date: DateTime.parse(json['date']),
       actualText: json['actualText'],
-      type: HistoryType.values.firstWhere((e) => e.toString().split('.').last == json['type']),
+      type: HistoryType.values
+          .firstWhere((e) => e.toString().split('.').last == json['type']),
     );
   }
 }

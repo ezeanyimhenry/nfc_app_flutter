@@ -25,7 +25,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       language: 'English',
       date: DateTime.now(),
       actualText: 'Sample text',
-      type: HistoryType.Read,
+      type: HistoryType.read,
     );
     setState(() {
       loadedHistoryList.add(newHistory);

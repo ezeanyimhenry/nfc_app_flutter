@@ -127,8 +127,9 @@ class _TextRecordScreenState extends State<TextRecordScreen> {
                         language: "English",
                         date: DateTime.now(),
                         actualText: controller.text,
-                        type: HistoryType.Written));
-                   await AppSharedPreference().saveHistoryList(loadedHistoryList);
+                        type: HistoryType.written));
+                    await AppSharedPreference()
+                        .saveHistoryList(loadedHistoryList);
                   },
                   text: 'Add'),
               Consumer<NFCNotifier>(builder: (context, provider, _) {
