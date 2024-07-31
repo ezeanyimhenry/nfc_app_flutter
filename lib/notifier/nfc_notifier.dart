@@ -10,13 +10,11 @@ class NFCNotifier extends ChangeNotifier {
   bool _showProcess = false;
   String _message = "";
   String _readContent = "";
-  bool _nfcEnabled = true;
 
   bool get isProcessing => _isProcessing;
   bool get showProcess => _showProcess;
   String get message => _message;
   String get readContent => _readContent;
-  bool get nfcEnabled => _nfcEnabled;
 
   final NfcBroadcastReceiver _nfcBroadcastReceiver;
 
@@ -69,7 +67,6 @@ class NFCNotifier extends ChangeNotifier {
           },
         );
       } else {
-        _nfcEnabled = false;
         _message = "Please Enable NFC From Settings";
         _isProcessing = false;
         notifyListeners();

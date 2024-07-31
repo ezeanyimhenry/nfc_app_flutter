@@ -12,6 +12,7 @@ import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:provider/provider.dart';
 
 class ReadNFCScreen extends StatefulWidget {
@@ -22,6 +23,22 @@ class ReadNFCScreen extends StatefulWidget {
 }
 
 class _ReadNFCScreenState extends State<ReadNFCScreen> {
+  bool _nfcEnabled = false;
+  @override
+  void initState() {
+    super.initState();
+    _checkNFCAvailability();
+  }
+
+  Future<void> _checkNFCAvailability() async {
+    bool isAvailable = await NfcManager.instance.isAvailable();
+    if (mounted) {
+      setState(() {
+        _nfcEnabled = isAvailable;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -56,7 +73,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                 Image.asset('assets/phone_center_image.png'),
                 const YGap(),
                 Visibility(
-                  visible: NFCNotifier().nfcEnabled,
+                  visible: _nfcEnabled,
                   child: SizedBox(
                     width: MediaQuery.sizeOf(context).width * 0.6,
                     child: PrimaryButton(
@@ -74,7 +91,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                 ),
                 const YGap(),
                 Text(
-                  NFCNotifier().nfcEnabled
+                  _nfcEnabled
                       ? 'Please place the top of your device near the tag receiver'
                       : "Your device is not nfc enabled, therefore can't use the app",
                   textAlign: TextAlign.center,
