@@ -4,9 +4,37 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
+import 'package:video_player/video_player.dart';
 
-class WatchDemoScreen extends StatelessWidget {
+import 'home.dart';
+
+class WatchDemoScreen extends StatefulWidget {
   const WatchDemoScreen({super.key});
+
+  @override
+  State<WatchDemoScreen> createState() => _WatchDemoScreenState();
+}
+
+class _WatchDemoScreenState extends State<WatchDemoScreen> {
+  late VideoPlayerController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.networkUrl(Uri.parse(
+        'https://firebasestorage.googleapis.com/v0/b/landlisting-d88df.appspot.com/o/buddy.MP4?alt=media&token=325610ac-2de9-48bd-a9ce-9391f25de774'))
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+
+    _controller.play();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +71,9 @@ class WatchDemoScreen extends StatelessWidget {
                     color: AppColors.primaryColor,
                     width: double.infinity,
                     height: 356,
+                    child: VideoPlayer(
+                      _controller
+                      ),
                   ),
                   const YGap(value: 32.0),
                   Text(
@@ -64,7 +95,10 @@ class WatchDemoScreen extends StatelessWidget {
               ),
               // const YGap(value: 10.0),
               PrimaryButton(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (txt) => const HomeScreen()));
+                },
                 text: 'Get Started',
               ),
             ],
