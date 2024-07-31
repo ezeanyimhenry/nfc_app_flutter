@@ -11,6 +11,7 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<String> history = [];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -108,161 +109,173 @@ class HistoryScreen extends StatelessWidget {
             YGap(
               value: MediaQuery.sizeOf(context).height * 0.016,
             ),
-            Expanded(
-                child: ListView.separated(
-              itemCount: fruits.length,
-              itemBuilder: (ctx, index) {
-                return Dismissible(
-                    key: Key(
-                      fruits[index],
-                    ),
-                    onDismissed: (direction) {
-                      // Perform delete action here
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (ctx) {
-                            return AlertDialog(
-                              // titleTextStyle: AppTextStyle.alertDialogHeading,
-                              contentPadding: AllPadding.padding16,
-                              title: SizedBox(
-                                width: double.infinity,
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Successful?",
-                                    style: AppTextStyle.susscessHeading1,
-                                  ),
-                                ),
-                              ),
-                              content: Text(
-                                "Your record has been successfully deleted.",
-                                style: AppTextStyle.alertDialogBodyTextSm,
-                                textAlign: TextAlign.center,
-                              ),
-                              actions: [
-                                GestureDetector(
-                                  onTap: () {
-                                    fruits.remove(fruits[index]);
-                                    Navigator.of(context).pop(true);
-                                  },
-                                  child: Container(
-                                    height: MediaQuery.sizeOf(context).height *
-                                        0.06,
-                                    width: MediaQuery.sizeOf(context).width,
-                                    decoration: BoxDecoration(
-                                        color: AppColors.primaryColor,
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: Center(
-                                      child: Text(
-                                        "Back to Home",
-                                        style: AppTextStyle.primaryButtonText,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            );
-                          });
-                    },
-                    confirmDismiss: (direction) async {
-                      return await showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (ctx) {
-                            return AlertDialog(
-                              // titleTextStyle: AppTextStyle.alertDialogHeading,
-                              contentPadding: AllPadding.padding16,
-                              title: SizedBox(
-                                width: double.infinity,
-                                child: Stack(
-                                  // mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Are you sure?",
-                                        style: AppTextStyle.alertDialogHeading,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      child: GestureDetector(
-                                        onTap: () =>
-                                            Navigator.of(context).pop(false),
-                                        child: SvgPicture.asset(
-                                            "assets/icons/svg/cancel.svg"),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              content: Text(
-                                "This will delete this record permanently. You cannot undo this action.",
-                                style: AppTextStyle.alertDialogBodyTextSm,
-                                textAlign: TextAlign.center,
-                              ),
-                              actions: [
-                                GestureDetector(
-                                  onTap: () {
-                                    fruits.remove(fruits[index]);
-                                    Navigator.of(context).pop(true);
-                                  },
-                                  child: Container(
-                                    height: MediaQuery.sizeOf(context).height *
-                                        0.06,
-                                    width: MediaQuery.sizeOf(context).width,
-                                    decoration: BoxDecoration(
-                                        color: AppColors.alertDialogColor,
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: Center(
-                                      child: Text(
-                                        "Delete",
-                                        style: AppTextStyle.primaryButtonText,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            );
-                          });
-                    },
-                    direction: DismissDirection.endToStart,
-                    background: Container(
-                      height: MediaQuery.sizeOf(context).height * 0.28,
-                      width: MediaQuery.sizeOf(context).width * 0.1,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(10),
+            if (history.isEmpty)
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // SvgPicture.asset('assets/icons/svg/empty_history.svg'),
+                      Image.asset('assets/icons/png/empty_history.png'),
+                      const YGap(
+                        value: 24,
                       ),
-                      child: Center(
-                          child:
-                              SvgPicture.asset("assets/icons/svg/delete.svg")),
-                    ),
-                    child: const HistoryCard());
-              },
-              separatorBuilder: (BuildContext context, int index) => const YGap(
-                value: 24,
-              ),
-            ))
+                      Text(
+                        'You do not have any record',
+                        style: AppTextStyle.bodyTextSemiBold,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else
+              Expanded(
+                  child: ListView.separated(
+                itemCount: history.length,
+                itemBuilder: (ctx, index) {
+                  return Dismissible(
+                      key: Key(
+                        history[index],
+                      ),
+                      onDismissed: (direction) {
+                        // Perform delete action here
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (ctx) {
+                              return AlertDialog(
+                                // titleTextStyle: AppTextStyle.alertDialogHeading,
+                                contentPadding: AllPadding.padding16,
+                                title: SizedBox(
+                                  width: double.infinity,
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Successful?",
+                                      style: AppTextStyle.susscessHeading1,
+                                    ),
+                                  ),
+                                ),
+                                content: Text(
+                                  "Your record has been successfully deleted.",
+                                  style: AppTextStyle.alertDialogBodyTextSm,
+                                  textAlign: TextAlign.center,
+                                ),
+                                actions: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      history.remove(history[index]);
+                                      Navigator.of(context).pop(true);
+                                    },
+                                    child: Container(
+                                      height:
+                                          MediaQuery.sizeOf(context).height *
+                                              0.06,
+                                      width: MediaQuery.sizeOf(context).width,
+                                      decoration: BoxDecoration(
+                                          color: AppColors.primaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      child: Center(
+                                        child: Text(
+                                          "Back to Home",
+                                          style: AppTextStyle.primaryButtonText,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                            });
+                      },
+                      confirmDismiss: (direction) async {
+                        return await showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (ctx) {
+                              return AlertDialog(
+                                // titleTextStyle: AppTextStyle.alertDialogHeading,
+                                contentPadding: AllPadding.padding16,
+                                title: SizedBox(
+                                  width: double.infinity,
+                                  child: Stack(
+                                    // mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "Are you sure?",
+                                          style:
+                                              AppTextStyle.alertDialogHeading,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 0,
+                                        child: GestureDetector(
+                                          onTap: () =>
+                                              Navigator.of(context).pop(false),
+                                          child: SvgPicture.asset(
+                                              "assets/icons/svg/cancel.svg"),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                content: Text(
+                                  "This will delete this record permanently. You cannot undo this action.",
+                                  style: AppTextStyle.alertDialogBodyTextSm,
+                                  textAlign: TextAlign.center,
+                                ),
+                                actions: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      history.remove(history[index]);
+                                      Navigator.of(context).pop(true);
+                                    },
+                                    child: Container(
+                                      height:
+                                          MediaQuery.sizeOf(context).height *
+                                              0.06,
+                                      width: MediaQuery.sizeOf(context).width,
+                                      decoration: BoxDecoration(
+                                          color: AppColors.alertDialogColor,
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      child: Center(
+                                        child: Text(
+                                          "Delete",
+                                          style: AppTextStyle.primaryButtonText,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                            });
+                      },
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        height: MediaQuery.sizeOf(context).height * 0.28,
+                        width: MediaQuery.sizeOf(context).width * 0.1,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                            child: SvgPicture.asset(
+                                "assets/icons/svg/delete.svg")),
+                      ),
+                      child: const HistoryCard());
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const YGap(
+                  value: 24,
+                ),
+              )),
           ],
         ),
       ),
     );
   }
 }
-
-List<String> fruits = [
-  'Apple',
-  'Banana',
-  'Cherry',
-  'Date',
-  'Elderberry',
-  'Fig',
-  'Grape',
-  'Honeydew',
-  'Kiwi',
-  'Lemon'
-];
