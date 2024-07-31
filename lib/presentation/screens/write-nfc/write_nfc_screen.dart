@@ -46,7 +46,7 @@ class WriteNFCScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset('assets/icons/svg/hand_search_signal.svg'),
+            Image.asset('assets/phone_center_image.png'),
             const YGap(),
             SizedBox(
               width: MediaQuery.sizeOf(context).width * 0.6,

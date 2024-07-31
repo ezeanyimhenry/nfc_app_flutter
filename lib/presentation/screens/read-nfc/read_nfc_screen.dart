@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:nfc_app/constants/app_colors.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
+import 'package:nfc_app/constants/app_textstyles.dart';
 // import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
 import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
@@ -192,13 +195,33 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
     return ChangeNotifierProvider(
       create: (context) => NFCNotifier(),
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.backgroundColor2,
+          leading: Padding(
+            padding: XPadding.horizontal16,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Read NFC',
+                  style: GoogleFonts.inter(
+                    color: AppColors.primaryTextColor,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          leadingWidth: double.infinity,
+        ),
         body: Center(
           child: Padding(
             padding: XPadding.horizontal24,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset('assets/icons/svg/hand_search_signal.svg'),
+                Image.asset('assets/phone_center_image.png'),
                 const YGap(),
                 SizedBox(
                   width: MediaQuery.sizeOf(context).width * 0.6,
@@ -276,10 +299,10 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                   ),
                 ),
                 const YGap(),
-                const Text(
+                Text(
                   'Please place the top of your device near the tag receiver',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16.0),
+                  style: AppTextStyle.bodyText,
                 ),
                 Consumer<NFCNotifier>(builder: (context, provider, _) {
                   if (provider.isProcessing) {
