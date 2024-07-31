@@ -43,6 +43,8 @@ dependencies:
   dropdown_search: ^5.0.6
   google_fonts: ^6.2.1
   android_intent: ^2.0.2
+  shared_preferences: ^2.2.3
+  timeago: ^3.7.0
 
 dev_dependencies:
   flutter_test:

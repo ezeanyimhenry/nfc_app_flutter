@@ -5,6 +5,7 @@ import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
+
 class NFCNotifier extends ChangeNotifier {
   bool _isProcessing = false;
   bool _showProcess = false;
@@ -38,6 +39,9 @@ class NFCNotifier extends ChangeNotifier {
     String content = "",
     required BuildContext context,
   }) async {
+    //history
+
+    
     try {
       _isProcessing = true;
       _message =
@@ -54,6 +58,7 @@ class NFCNotifier extends ChangeNotifier {
             } else if (nfcOperation == NFCOperation.write) {
               await _writeToTag(nfcTag: nfcTag, content: content);
               _message = "DONE";
+             
             }
 
             _isProcessing = false;

@@ -4,9 +4,27 @@ import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/presentation/screens/write-nfc/add_record_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 
-class WriteNFCScreen extends StatelessWidget {
+class WriteNFCScreen extends StatefulWidget {
   const WriteNFCScreen({super.key});
+
+  @override
+  State<WriteNFCScreen> createState() => _WriteNFCScreenState();
+}
+
+class _WriteNFCScreenState extends State<WriteNFCScreen> {
+  bool nfcEnabled = true;
+  @override
+  void initState() {
+
+    super.initState();
+    NfcManager.instance.isAvailable().then((c) {
+      setState(() {
+        nfcEnabled = c;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,16 +65,19 @@ class WriteNFCScreen extends StatelessWidget {
           children: [
             Image.asset('assets/phone_center_image.png'),
             const YGap(),
-            SizedBox(
-              width: MediaQuery.sizeOf(context).width * 0.6,
-              child: PrimaryButton(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (txt) => const AddRecordScreen(),
+            Visibility(
+              visible: nfcEnabled,
+              child: SizedBox(
+                width: MediaQuery.sizeOf(context).width * 0.6,
+                child: PrimaryButton(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (txt) => const AddRecordScreen(),
+                    ),
                   ),
+                  text: 'Write NFC Tag',
                 ),
-                text: 'Write NFC Tag',
               ),
             ),
             const YGap(),
@@ -66,7 +87,9 @@ class WriteNFCScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Tap on the ‘+’ button to add new records.',
+                    nfcEnabled
+                        ? 'Tap on the ‘+’ button to add new records.'
+                        : 'Your device has no NFC support so can\'t use the app',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.inter(
                       fontSize: 16.0,
@@ -74,14 +97,6 @@ class WriteNFCScreen extends StatelessWidget {
                     ),
                   ),
                   const YGap(value: 24.0),
-                  Text(
-                    'Or ‘Write NFC Tag’ to detect NFC tag for writing.',
-                    style: GoogleFonts.inter(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
                 ],
               ),
             ),
