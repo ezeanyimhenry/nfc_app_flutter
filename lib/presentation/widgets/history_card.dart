@@ -51,7 +51,7 @@ class HistoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "${timeago.format(historyModel!.date)}",
+                timeago.format(historyModel!.date),
                 style: AppTextStyle.bodyTextSm,
               ),
               Text(

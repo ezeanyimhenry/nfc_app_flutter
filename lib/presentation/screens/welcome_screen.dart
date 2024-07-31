@@ -17,22 +17,22 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  Future<void> _addHistory() async {
-    List<HistoryModel> loadedHistoryList =
-        await AppSharedPreference().getHistoryList();
+  // Future<void> _addHistory() async {
+  //   List<HistoryModel> loadedHistoryList =
+  //       await AppSharedPreference().getHistoryList();
 
-    HistoryModel newHistory = HistoryModel(
-      language: 'English',
-      date: DateTime.now(),
-      actualText: 'Sample text',
-      type: HistoryType.read,
-    );
-    setState(() {
-      loadedHistoryList.add(newHistory);
-    });
-    print(loadedHistoryList);
-    await AppSharedPreference().saveHistoryList(loadedHistoryList);
-  }
+  //   HistoryModel newHistory = HistoryModel(
+  //     language: 'English',
+  //     date: DateTime.now(),
+  //     actualText: 'Sample text',
+  //     type: HistoryType.read,
+  //   );
+  //   setState(() {
+  //     loadedHistoryList.add(newHistory);
+  //   });
+
+  //   await AppSharedPreference().saveHistoryList(loadedHistoryList);
+  // }
 
   @override
   Widget build(BuildContext context) {
