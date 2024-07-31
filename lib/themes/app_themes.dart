@@ -6,7 +6,7 @@ class AppThemeData {
 
   static final lightMode = ThemeData(
     colorScheme: const ColorScheme.light(
-      surface: AppColors.backgroundColor,
+      surface: AppColors.backgroundColor2,
     ),
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: AppColors.primaryColor,
