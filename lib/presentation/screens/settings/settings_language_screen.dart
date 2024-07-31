@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
-import 'package:nfc_app/presentation/widgets/app_bottom_nav.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/select_language_sheet.dart';
 
@@ -101,7 +100,6 @@ class _SettingsLanguagecreenState extends State<SettingsLanguagecreen> {
           ),
         ],
       ),
-      bottomNavigationBar: const AppBottomNav(selectedindex: 2),
     );
   }
 }
