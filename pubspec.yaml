@@ -45,12 +45,12 @@ dependencies:
   android_intent: ^2.0.2
   shared_preferences: ^2.2.3
   timeago: ^3.7.0
-  flutter_lints: ^4.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^4.0.0
 
 flutter_launcher_icons:
   android: true
