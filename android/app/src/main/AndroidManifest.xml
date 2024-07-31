@@ -26,42 +26,40 @@
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
 
-            <meta-data
-                android:name="io.flutter.embedding.android.NormalTheme"
-                android:resource="@style/NormalTheme"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="com.example.nfc_app"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.nfc.action.NFC_DISCOVERED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <meta-data
-                android:name="android.nfc.action.TECH_DISCOVERED"
-                android:resource="@xml/nfc_tech_filter" />
-        </activity>
 
-        <!-- NFC Activity -->
-        <activity
-            android:name=".NFCActivity"
-            android:exported="true"
-            android:launchMode="singleTop">
-            <!-- Intent Filter for NFC -->
+            <!-- Intent Filter for NDEF_DISCOVERED -->
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="com.example.nfc_app" android:host="www.example.com" />
+                <data android:scheme="http" android:host="www.example.com" />
+                <!-- Use appropriate scheme and host for your tags -->
             </intent-filter>
+
+            <!-- Intent Filter for TECH_DISCOVERED -->
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- Intent Filter for NFC_DISCOVERED -->
+            <intent-filter>
+                <action android:name="android.nfc.action.NFC_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- Meta-data to specify NFC tech filter -->
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme"/>
+            
         </activity>
 
         <!-- NFC Broadcast Receiver -->

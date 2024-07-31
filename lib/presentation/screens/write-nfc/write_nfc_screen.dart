@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
@@ -18,7 +17,7 @@ class _WriteNFCScreenState extends State<WriteNFCScreen> {
   bool nfcEnabled = true;
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     NfcManager.instance.isAvailable().then((c) {
       setState(() {
