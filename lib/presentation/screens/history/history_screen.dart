@@ -118,9 +118,53 @@ class HistoryScreen extends StatelessWidget {
                     ),
                     onDismissed: (direction) {
                       // Perform delete action here
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Item deleted')),
-                      );
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (ctx) {
+                            return AlertDialog(
+                              // titleTextStyle: AppTextStyle.alertDialogHeading,
+                              contentPadding: AllPadding.padding16,
+                              title: SizedBox(
+                                width: double.infinity,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Successful?",
+                                    style: AppTextStyle.susscessHeading1,
+                                  ),
+                                ),
+                              ),
+                              content: Text(
+                                "Your record has been successfully deleted.",
+                                style: AppTextStyle.alertDialogBodyTextSm,
+                                textAlign: TextAlign.center,
+                              ),
+                              actions: [
+                                GestureDetector(
+                                  onTap: () {
+                                    fruits.remove(fruits[index]);
+                                    Navigator.of(context).pop(true);
+                                  },
+                                  child: Container(
+                                    height: MediaQuery.sizeOf(context).height *
+                                        0.06,
+                                    width: MediaQuery.sizeOf(context).width,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.primaryColor,
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    child: Center(
+                                      child: Text(
+                                        "Back to Home",
+                                        style: AppTextStyle.primaryButtonText,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          });
                     },
                     confirmDismiss: (direction) async {
                       return await showDialog(
