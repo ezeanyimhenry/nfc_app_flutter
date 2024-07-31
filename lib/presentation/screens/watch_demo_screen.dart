@@ -1,4 +1,6 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nfc_app/constants/app_colors.dart';
@@ -16,23 +18,42 @@ class WatchDemoScreen extends StatefulWidget {
 }
 
 class _WatchDemoScreenState extends State<WatchDemoScreen> {
-  late VideoPlayerController _controller;
+  late VideoPlayerController _videoPlayerController;
+  late ChewieController _chewieController;
   @override
   void initState() {
+    final String videoToken = dotenv.env['VIDEO_TOKEN'] ?? '';
     super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse(
-        'https://firebasestorage.googleapis.com/v0/b/landlisting-d88df.appspot.com/o/buddy.MP4?alt=media&token=325610ac-2de9-48bd-a9ce-9391f25de774'))
+    _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(
+        'https://firebasestorage.googleapis.com/v0/b/landlisting-d88df.appspot.com/o/buddy.MP4?alt=media&token=$videoToken'))
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
 
-    _controller.play();
+    _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController,
+      aspectRatio: 16 / 9,
+      autoPlay: true,
+      looping: true,
+      showControls: true,
+      showControlsOnInitialize: true,
+      materialProgressColors: ChewieProgressColors(
+        playedColor: Colors.red,
+        handleColor: Colors.red,
+        backgroundColor: Colors.grey,
+        bufferedColor: Colors.lightGreen,
+      ),
+      placeholder: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _videoPlayerController.dispose();
+    _chewieController.dispose();
     super.dispose();
   }
 
@@ -68,12 +89,15 @@ class _WatchDemoScreenState extends State<WatchDemoScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    color: AppColors.primaryColor,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: AppColors.primaryColor,
+                    ),
                     width: double.infinity,
                     height: 356,
-                    child: VideoPlayer(
-                      _controller
-                      ),
+                    child: Chewie(
+                      controller: _chewieController,
+                    ),
                   ),
                   const YGap(value: 32.0),
                   Text(
