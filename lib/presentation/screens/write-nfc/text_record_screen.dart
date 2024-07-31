@@ -4,11 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
+import 'package:nfc_app/presentation/screens/history/models/history_model.dart';
 import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
 import 'package:provider/provider.dart';
+
+import '../history/logic/shared_preference.dart';
 
 class TextRecordScreen extends StatefulWidget {
   const TextRecordScreen({super.key});
@@ -115,8 +118,18 @@ class _TextRecordScreenState extends State<TextRecordScreen> {
               ),
               const YGap(value: 16.0),
               PrimaryButton(
-                  onTap: () {
+                  onTap: () async {
                     writeToNfc();
+                    //save to history
+                    List<HistoryModel> loadedHistoryList =
+                        await AppSharedPreference().getHistoryList();
+                    loadedHistoryList.add(HistoryModel(
+                        language: "English",
+                        date: DateTime.now(),
+                        actualText: controller.text,
+                        type: HistoryType.written));
+                    await AppSharedPreference()
+                        .saveHistoryList(loadedHistoryList);
                   },
                   text: 'Add'),
               Consumer<NFCNotifier>(builder: (context, provider, _) {

@@ -6,6 +6,7 @@ import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/presentation/screens/home.dart';
 import 'package:nfc_app/presentation/screens/watch_demo_screen.dart';
 
+
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
@@ -14,6 +15,23 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  // Future<void> _addHistory() async {
+  //   List<HistoryModel> loadedHistoryList =
+  //       await AppSharedPreference().getHistoryList();
+
+  //   HistoryModel newHistory = HistoryModel(
+  //     language: 'English',
+  //     date: DateTime.now(),
+  //     actualText: 'Sample text',
+  //     type: HistoryType.read,
+  //   );
+  //   setState(() {
+  //     loadedHistoryList.add(newHistory);
+  //   });
+
+  //   await AppSharedPreference().saveHistoryList(loadedHistoryList);
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    // _addHistory();
                     Navigator.push(
                         context,
                         MaterialPageRoute(

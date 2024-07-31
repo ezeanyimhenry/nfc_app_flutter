@@ -6,12 +6,35 @@ import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/presentation/widgets/history_card.dart';
 
-class HistoryScreen extends StatelessWidget {
+import 'logic/shared_preference.dart';
+import 'models/history_model.dart';
+
+class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
 
   @override
+  State<HistoryScreen> createState() => _HistoryScreenState();
+}
+
+class _HistoryScreenState extends State<HistoryScreen> {
+  List<HistoryModel> historyList = [];
+  @override
+  void initState() {
+
+    super.initState();
+    _loadHistory();
+  }
+
+  Future<void> _loadHistory() async {
+    List<HistoryModel> loadedHistoryList =
+        await AppSharedPreference().getHistoryList();
+    setState(() {
+      historyList = loadedHistoryList;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<String> history = [];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -89,7 +112,7 @@ class HistoryScreen extends StatelessWidget {
                     style: AppTextStyle.secondaryButtonText,
                   ),
                   TextSpan(
-                    text: ' (6)',
+                    text: ' (${historyList.length})',
                     style: AppTextStyle.bodyTextSm,
                   ),
                 ])),
@@ -109,7 +132,7 @@ class HistoryScreen extends StatelessWidget {
             YGap(
               value: MediaQuery.sizeOf(context).height * 0.016,
             ),
-            if (history.isEmpty)
+            if (historyList.isEmpty)
               Expanded(
                 child: Center(
                   child: Column(
@@ -132,11 +155,11 @@ class HistoryScreen extends StatelessWidget {
             else
               Expanded(
                   child: ListView.separated(
-                itemCount: history.length,
+                itemCount: historyList.length,
                 itemBuilder: (ctx, index) {
                   return Dismissible(
                       key: Key(
-                        history[index],
+                        historyList[index].date.toIso8601String(),
                       ),
                       onDismissed: (direction) {
                         // Perform delete action here
@@ -164,9 +187,15 @@ class HistoryScreen extends StatelessWidget {
                                 ),
                                 actions: [
                                   GestureDetector(
-                                    onTap: () {
-                                      history.remove(history[index]);
-                                      Navigator.of(context).pop(true);
+                                    onTap: () async {
+                                   
+                                   
+                                      setState(() {
+   historyList.remove(historyList[index]);
+                                       AppSharedPreference()
+                                          .saveHistoryList(historyList);
+                                      });
+                                         Navigator.pop(context);
                                     },
                                     child: Container(
                                       height:
@@ -179,7 +208,7 @@ class HistoryScreen extends StatelessWidget {
                                               BorderRadius.circular(12)),
                                       child: Center(
                                         child: Text(
-                                          "Back to Home",
+                                          "Back to History",
                                           style: AppTextStyle.primaryButtonText,
                                         ),
                                       ),
@@ -230,7 +259,7 @@ class HistoryScreen extends StatelessWidget {
                                 actions: [
                                   GestureDetector(
                                     onTap: () {
-                                      history.remove(history[index]);
+                                      // history.remove(history[index]);
                                       Navigator.of(context).pop(true);
                                     },
                                     child: Container(
@@ -266,7 +295,9 @@ class HistoryScreen extends StatelessWidget {
                             child: SvgPicture.asset(
                                 "assets/icons/svg/delete.svg")),
                       ),
-                      child: const HistoryCard());
+                      child: HistoryCard(
+                        historyModel: historyList[index],
+                      ));
                 },
                 separatorBuilder: (BuildContext context, int index) =>
                     const YGap(

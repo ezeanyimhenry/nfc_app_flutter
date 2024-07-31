@@ -12,6 +12,7 @@ import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:provider/provider.dart';
 
 class ReadNFCScreen extends StatefulWidget {
@@ -189,6 +190,17 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
   //     autoDismiss: false,
   //   );
   // }
+  bool nfcEnabled = true;
+  @override
+  void initState() {
+
+    super.initState();
+    NfcManager.instance.isAvailable().then((c) {
+      setState(() {
+        nfcEnabled = c;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -223,23 +235,28 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
               children: [
                 Image.asset('assets/phone_center_image.png'),
                 const YGap(),
-                SizedBox(
-                  width: MediaQuery.sizeOf(context).width * 0.6,
-                  child: PrimaryButton(
-                    onTap: () {
-                      Provider.of<NFCNotifier>(context, listen: false)
-                          .startNFCOperation(
-                        nfcOperation: NFCOperation.read,
-                        context: context,
-                      );
-                      _showInitialBottomSheet(context);
-                    },
-                    text: 'Scan NFC tag',
+                Visibility(
+                  visible: nfcEnabled,
+                  child: SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.6,
+                    child: PrimaryButton(
+                      onTap: () {
+                        Provider.of<NFCNotifier>(context, listen: false)
+                            .startNFCOperation(
+                          nfcOperation: NFCOperation.read,
+                          context: context,
+                        );
+                        _showInitialBottomSheet(context);
+                      },
+                      text: 'Scan NFC tag',
+                    ),
                   ),
                 ),
                 const YGap(),
                 Text(
-                  'Please place the top of your device near the tag receiver',
+                  nfcEnabled
+                      ? 'Please place the top of your device near the tag receiver'
+                      : "Your device is not nfc enabled, therefore can't use the app",
                   textAlign: TextAlign.center,
                   style: AppTextStyle.bodyText,
                 ),
