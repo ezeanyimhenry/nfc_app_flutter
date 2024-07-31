@@ -116,7 +116,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                   if (provider.readContent.isNotEmpty) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       Navigator.pop(context); // Close the previous bottom sheet
-                      _showSuccessBottomSheet(context, provider.message);
+                      _showSuccessBottomSheet(context, provider.readContent);
                     });
                   }
                   return const SizedBox();
@@ -170,7 +170,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
     );
   }
 
-  void _showSuccessBottomSheet(BuildContext context, String message) {
+  void _showSuccessBottomSheet(BuildContext context, String readContent) {
     showModalBottomSheet(
       isDismissible: false,
       context: context,
@@ -184,7 +184,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TranslateScreen(message: message),
+                  builder: (context) => TranslateScreen(message: readContent),
                 ),
               );
             },

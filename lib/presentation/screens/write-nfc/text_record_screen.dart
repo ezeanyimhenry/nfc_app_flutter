@@ -208,7 +208,7 @@ class _TextRecordScreenState extends State<TextRecordScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (txt) => TranslateScreen(
-                                            message: provider.message)));
+                                            message: provider.readContent)));
                               },
                               message: "Make sure your device is well placed.",
                               title: "Scan Successful!",

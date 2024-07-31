@@ -117,7 +117,7 @@ class NFCNotifier extends ChangeNotifier {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TranslateScreen(message: message),
+                    builder: (context) => TranslateScreen(message: readContent),
                   ),
                 );
               },
