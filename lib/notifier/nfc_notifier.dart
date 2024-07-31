@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
+import 'package:nfc_app/notifier/nfc_broadcast_receiver.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 class NFCNotifier extends ChangeNotifier {
@@ -12,6 +12,23 @@ class NFCNotifier extends ChangeNotifier {
   bool get showProcess => _showProcess;
   String get message => _message;
   String get readContent => _readContent;
+
+  final NfcBroadcastReceiver _nfcBroadcastReceiver;
+
+  NFCNotifier() : _nfcBroadcastReceiver = NfcBroadcastReceiver() {
+    _nfcBroadcastReceiver.events.listen((event) {
+      // Update state based on the NFC event
+      _readContent = event.toString();
+      _isProcessing = false; // NFC operation is complete
+      notifyListeners();
+    });
+  }
+
+  @override
+  void dispose() {
+    _nfcBroadcastReceiver.dispose();
+    super.dispose();
+  }
 
   Future<void> startNFCOperation({
     required NFCOperation nfcOperation,

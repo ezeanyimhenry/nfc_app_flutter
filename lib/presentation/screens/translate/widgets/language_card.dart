@@ -5,22 +5,23 @@ import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_svgs.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/presentation/screens/translate/model/language_data.dart';
-import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 
 class LanguageCard extends StatelessWidget {
   const LanguageCard({
     required this.data,
+    this.hasError = false,
     this.isTranslating = false,
     super.key,
   });
   final LanguageData data;
   final bool isTranslating;
+  final bool hasError;
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: AllPadding.padding16,
       decoration: BoxDecoration(
-        border: Border.all(color: sidebarColor),
+        border: Border.all(color: AppColors.miscellaneousTextColor),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -31,7 +32,6 @@ class LanguageCard extends StatelessWidget {
             style: AppTextStyle.bodyTextSemiBold,
           ),
           const YGap(value: 24),
-
           isTranslating
               ? Center(
                   child: SvgPicture.asset(
@@ -42,12 +42,17 @@ class LanguageCard extends StatelessWidget {
                     ),
                   ),
                 )
-              : Text(data.content),
-
+              : SelectableText(
+                  data.content,
+                  cursorColor: AppColors.primaryColor,
+                  style: TextStyle(
+                    color: hasError ? AppColors.failureColor : null,
+                  ),
+                ),
           Padding(
             padding: YPadding.vertical16,
             child: const Divider(
-              color: dividerColor,
+              color: AppColors.dividerColour,
             ),
           ),
           Row(

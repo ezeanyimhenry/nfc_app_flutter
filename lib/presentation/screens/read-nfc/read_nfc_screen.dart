@@ -232,68 +232,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                         nfcOperation: NFCOperation.read,
                         context: context,
                       );
-                      // showSequentialBottomSheets(context);
-                      showModalBottomSheet(
-                          isDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.4,
-                              child: AppBottomsheet(
-                                hasInactiveButton: true,
-                                inactiveButtonText: "Continue",
-                                inactiveButtonOnTap: () {},
-                                message:
-                                    "Please place the back of your device near the tag receiver to read tag.",
-                                title: "Ready to Scan",
-                                centerContent: SvgPicture.asset(
-                                    'assets/icons/svg/ready_to_scan.svg'),
-                              ),
-                            );
-                          });
-
-                      // showModalBottomSheet(
-                      //     isDismissible: false,
-                      //     context: context,
-                      //     builder: (context) {
-                      //       return SizedBox(
-                      //         height: MediaQuery.of(context).size.height * 0.4,
-                      //         child: AppBottomsheet(
-                      //           message:
-                      //               "Make sure your device is well placed.",
-                      //           title: "Scanning...",
-                      //           centerContent: ProgressIndicatorWithText(
-                      //             progress: 0.75,
-                      //           ),
-                      //         ),
-                      //       );
-                      //     });
-
-                      // showModalBottomSheet(
-                      //     isDismissible: false,
-                      //     context: context,
-                      //     builder: (context) {
-                      //       return SizedBox(
-                      //         height: MediaQuery.of(context).size.height * 0.4,
-                      //         child: AppBottomsheet(
-                      //           hasPrimaryButton: true,
-                      //           primaryButtonText: "Continue",
-                      //           primaryButtonOnTap: () {
-                      //             Navigator.push(
-                      //                 context,
-                      //                 MaterialPageRoute(
-                      //                     builder: (txt) =>
-                      //                         const TranslateScreen()));
-                      //           },
-                      //           message:
-                      //               "Make sure your device is well placed.",
-                      //           title: "Scan Successful!",
-                      //           centerContent: ProgressIndicatorWithText(
-                      //             progress: 1.0,
-                      //           ),
-                      //         ),
-                      //       );
-                      //     });
+                      _showInitialBottomSheet(context);
                     },
                     text: 'Scan NFC tag',
                   ),
@@ -306,51 +245,14 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                 ),
                 Consumer<NFCNotifier>(builder: (context, provider, _) {
                   if (provider.isProcessing) {
-                    // return const CircularProgressIndicator();
-                    showModalBottomSheet(
-                        isDismissible: false,
-                        context: context,
-                        builder: (context) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            child: const AppBottomsheet(
-                              message: "Make sure your device is well placed.",
-                              title: "Scanning...",
-                              centerContent: ProgressIndicatorWithText(
-                                progress: 0.75,
-                              ),
-                            ),
-                          );
-                        });
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      _showProcessingBottomSheet(context);
+                    });
                   }
                   if (provider.readContent.isNotEmpty) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.pop(context);
-                      showModalBottomSheet(
-                          isDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.4,
-                              child: AppBottomsheet(
-                                hasPrimaryButton: true,
-                                primaryButtonText: "Continue",
-                                primaryButtonOnTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (txt) => TranslateScreen(
-                                              message: provider.message)));
-                                },
-                                message:
-                                    "Make sure your device is well placed.",
-                                title: "Scan Successful!",
-                                centerContent: const ProgressIndicatorWithText(
-                                  progress: 1.0,
-                                ),
-                              ),
-                            );
-                          });
+                      Navigator.pop(context); // Close the previous bottom sheet
+                      _showSuccessBottomSheet(context, provider.message);
                     });
                   }
                   return const SizedBox();
@@ -360,6 +262,76 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showInitialBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      isDismissible: false,
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: AppBottomsheet(
+            hasInactiveButton: true,
+            inactiveButtonText: "Continue",
+            inactiveButtonOnTap: () {},
+            message:
+                "Please place the back of your device near the tag receiver to read tag.",
+            title: "Ready to Scan",
+            centerContent:
+                SvgPicture.asset('assets/icons/svg/ready_to_scan.svg'),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showProcessingBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      isDismissible: false,
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: const AppBottomsheet(
+            message: "Make sure your device is well placed.",
+            title: "Scanning...",
+            centerContent: ProgressIndicatorWithText(
+              progress: 0.75,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showSuccessBottomSheet(BuildContext context, String message) {
+    showModalBottomSheet(
+      isDismissible: false,
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: AppBottomsheet(
+            hasPrimaryButton: true,
+            primaryButtonText: "Continue",
+            primaryButtonOnTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TranslateScreen(message: message),
+                ),
+              );
+            },
+            message: "Make sure your device is well placed.",
+            title: "Scan Successful!",
+            centerContent: const ProgressIndicatorWithText(
+              progress: 1.0,
+            ),
+          ),
+        );
+      },
     );
   }
 }
