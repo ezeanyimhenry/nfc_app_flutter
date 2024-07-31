@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
-import 'package:nfc_app/presentation/widgets/app_bottom_nav.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
+import 'package:nfc_app/presentation/widgets/select_language_sheet.dart';
 
-class SettingsLanguagecreen extends StatelessWidget {
+class SettingsLanguagecreen extends StatefulWidget {
   const SettingsLanguagecreen({super.key});
 
+  @override
+  State<SettingsLanguagecreen> createState() => _SettingsLanguagecreenState();
+}
+
+class _SettingsLanguagecreenState extends State<SettingsLanguagecreen> {
+  String _selectedLanguage = 'Spanish';
+  bool _languageSelected = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,201 +60,46 @@ class SettingsLanguagecreen extends StatelessWidget {
                       children: [
                         ListTile(
                           title: Text(
-                            'Spanish',
+                            _selectedLanguage,
                             style: AppTextStyle.bodyText,
                           ),
                           trailing: SvgPicture.asset(
                               "assets/icons/svg/caret_down.svg"),
-                          onTap: () {},
+                          onTap: () {
+                            showLanguageSelectionSheet(
+                                    context, _selectedLanguage)
+                                .then((selected) {
+                              if (selected != null) {
+                                setState(() {
+                                  _selectedLanguage = selected;
+                                  _languageSelected = true;
+                                });
+                              }
+                            });
+                          },
                         ),
                       ],
                     ),
                   ),
-                  // const YGap(
-                  //   value: 20,
-                  // ),
-
                   YGap(
                     value: MediaQuery.sizeOf(context).height * 0.5,
                   ),
-                  InactiveButton(
-                    onTap: () {},
-                    text: 'Save',
-                  )
-                  // PrimaryButton(onTap: () {}, text: 'Save')
+                  if (_languageSelected)
+                    PrimaryButton(
+                      onTap: () {},
+                      text: 'Save',
+                    )
+                  else
+                    InactiveButton(
+                      onTap: () {},
+                      text: 'Save',
+                    ),
                 ],
               ),
             ),
           ),
-          // Positioned(
-          //   top: MediaQuery.sizeOf(context).height * 0.1,
-          //   left: 16.0,
-          //   right: 16.0,
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Container(
-          //         decoration: BoxDecoration(
-          //           borderRadius: BorderRadius.circular(5),
-          //           border: Border.all(
-          //             color: const Color(0xFFF2F2F7),
-          //             width: 1.0,
-          //           ),
-          //         ),
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             ListTile(
-          //               leading:
-          //                   SvgPicture.asset("assets/icons/svg/search.svg"),
-          //               title: Text(
-          //                 'Search Language',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //       const YGap(
-          //         value: 8,
-          //       ),
-          //       Container(
-          //         decoration: BoxDecoration(
-          //           color: Colors.white,
-          //           borderRadius: BorderRadius.circular(8),
-          //           border: Border.all(
-          //             color: const Color(0xFFF2F2F7),
-          //             width: 1.0,
-          //           ),
-          //           boxShadow: [
-          //             BoxShadow(
-          //               color: Colors.black.withOpacity(0.25), // Shadow color
-          //               offset: const Offset(0, 4), // Shadow offset
-          //               blurRadius: 4, // Blur radius of the shadow
-          //               spreadRadius: 0, // Spread radius of the shadow
-          //             ),
-          //           ],
-          //         ),
-          //         child: Column(children: [
-          //           Container(
-          //             color: const Color(0xFFF4F3F3),
-          //             child: ListTile(
-          //               title: Text(
-          //                 'Spanish',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ),
-          //           Container(
-          //             color: Colors.white,
-          //             child: ListTile(
-          //               title: Text(
-          //                 'English',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ),
-          //           Container(
-          //             color: Colors.white,
-          //             child: ListTile(
-          //               title: Text(
-          //                 'Korean',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ),
-          //           Container(
-          //             color: Colors.white,
-          //             child: ListTile(
-          //               title: Text(
-          //                 'German',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ),
-          //           Container(
-          //             color: Colors.white,
-          //             child: ListTile(
-          //               title: Text(
-          //                 'French',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ),
-          //           Container(
-          //             color: Colors.white,
-          //             child: ListTile(
-          //               title: Text(
-          //                 'Mandarin',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ),
-          //           Container(
-          //             color: Colors.white,
-          //             child: ListTile(
-          //               title: Text(
-          //                 'Japanese',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ),
-          //           Container(
-          //             color: Colors.white,
-          //             child: ListTile(
-          //               title: Text(
-          //                 'Portuguese',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ),
-          //           Container(
-          //             color: Colors.white,
-          //             child: ListTile(
-          //               title: Text(
-          //                 'Igbo',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ),
-          //           Container(
-          //             color: Colors.white,
-          //             child: ListTile(
-          //               title: Text(
-          //                 'Yoruba',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ),
-          //           Container(
-          //             color: Colors.white,
-          //             child: ListTile(
-          //               title: Text(
-          //                 'Hausa',
-          //                 style: AppTextStyle.bodyTextSm,
-          //               ),
-          //               onTap: () {},
-          //             ),
-          //           ),
-          //         ]),
-          //       ),
-          //     ],
-          //   ),
-          // )
         ],
       ),
-      bottomNavigationBar: const AppBottomNav(selectedindex: 2),
     );
   }
 }

@@ -87,6 +87,14 @@ We welcome contributions to Translate Buddy! Please follow these guidelines:
 
 6. **Create a Pull Request:** Open a pull request on the original repository and describe your changes.
 
+## Download the Demo
+
+### APK Download
+- [Download APK]()
+
+### Appetize.io Demo
+- [Open Appetize.io Demo]()
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

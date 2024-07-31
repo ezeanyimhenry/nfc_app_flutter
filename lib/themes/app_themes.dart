@@ -5,7 +5,13 @@ class AppThemeData {
   AppThemeData._();
 
   static final lightMode = ThemeData(
-      colorScheme: const ColorScheme.light(
-    surface: AppColors.backgroundColor,
-  ));
+    colorScheme: const ColorScheme.light(
+      surface: AppColors.backgroundColor2,
+    ),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: AppColors.primaryColor,
+      selectionHandleColor: AppColors.primaryColor,
+      selectionColor: AppColors.primaryColor.withOpacity(0.5),
+    ),
+  );
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nfc_app/notifier/bottom_nav.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
+import 'package:nfc_app/presentation/screens/translate/notifier/language_notifier.dart';
+import 'package:nfc_app/presentation/screens/translate/repository/translate_repository.dart';
 import 'package:nfc_app/presentation/screens/welcome_screen.dart';
 import 'package:nfc_app/themes/app_themes.dart';
 import 'package:provider/provider.dart';
@@ -26,13 +28,18 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => NFCNotifier()),
         ChangeNotifierProvider(create: (_) => BottomNavigationProvider()),
+        ChangeNotifierProvider(
+          create: (_) => LanguageNotifier(TranslateRepository()),
+        ),
       ],
       child: MaterialApp(
-        
         debugShowCheckedModeBanner: false,
         theme: AppThemeData.lightMode,
-        home: const WelcomeScreen(),
+        home:  const WelcomeScreen()
       ),
     );
   }
 }
+
+
+//* ui/watch-demo-screen

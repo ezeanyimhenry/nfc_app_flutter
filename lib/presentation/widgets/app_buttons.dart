@@ -3,20 +3,22 @@ import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
 
 class PrimaryButton extends StatelessWidget {
-  final Function() onTap;
-  final String text;
+  final Function()? onTap;
+  final String? text;
   final Color? color;
   final Color? textColor;
   final double? width;
   final double? height;
+  final Widget? child;
   const PrimaryButton({
     super.key,
     required this.onTap,
-    required this.text,
+    this.text,
     this.width,
     this.height,
     this.color,
     this.textColor,
+    this.child,
   });
   @override
   Widget build(BuildContext context) {
@@ -32,8 +34,8 @@ class PrimaryButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: Text(
-        text,
+      child:child?? Text(
+        text??"Execute",
         style: AppTextStyle.primaryButtonText,
       ),
     );
