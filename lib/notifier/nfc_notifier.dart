@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:nfc_app/notifier/nfc_broadcast_receiver.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
+import '../presentation/screens/history/logic/sharedPreference.dart';
+import '../presentation/screens/history/models/history_model.dart';
+
 class NFCNotifier extends ChangeNotifier {
   bool _isProcessing = false;
   bool _showProcess = false;
@@ -35,6 +38,9 @@ class NFCNotifier extends ChangeNotifier {
     String content = "",
     required BuildContext context,
   }) async {
+    //history
+
+    
     try {
       _isProcessing = true;
       _message =
@@ -51,6 +57,7 @@ class NFCNotifier extends ChangeNotifier {
             } else if (nfcOperation == NFCOperation.write) {
               await _writeToTag(nfcTag: nfcTag, content: content);
               _message = "DONE";
+             
             }
 
             _isProcessing = false;

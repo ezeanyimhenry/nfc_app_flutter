@@ -12,6 +12,9 @@ import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/select_language_sheet.dart';
 import 'package:provider/provider.dart';
 
+import '../history/logic/sharedPreference.dart';
+import '../history/models/history_model.dart';
+
 class TranslateScreen extends StatefulWidget {
   final String message;
   const TranslateScreen({super.key, required this.message});
@@ -30,6 +33,15 @@ class _TranslateScreenState extends State<TranslateScreen> {
         targetLanguage: languageNotifier.languageToBeTranslatedTo,
       ),
     );
+    //save to history
+    List<HistoryModel> loadedHistoryList =
+        await AppSharedPreference().getHistoryList();
+    loadedHistoryList.add(HistoryModel(
+        language: languageNotifier.languageToBeTranslatedTo,
+        date: DateTime.now(),
+        actualText: widget.message,
+        type: HistoryType.Read));
+  await  AppSharedPreference().saveHistoryList(loadedHistoryList);
   }
 
   @override

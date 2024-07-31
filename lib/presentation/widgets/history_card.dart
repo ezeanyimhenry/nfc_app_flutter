@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nfc_app/presentation/screens/history/models/history_model.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_spacing.dart';
 import '../../constants/app_textstyles.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class HistoryCard extends StatelessWidget {
-  const HistoryCard({super.key});
+  const HistoryCard({super.key, this.historyModel});
+  final HistoryModel? historyModel;
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +24,14 @@ class HistoryCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Source Language - Spanish",
+            "Source Language - ${historyModel!.language}",
             style: AppTextStyle.bodyTextSemiBold,
           ),
           const YGap(
             value: 24,
           ),
           Text(
-            "\"Bienvenido al Museo de Historia. Siga las señales para iniciar su recorrido y descubra exposiciones fascinantes sobre nuestra herencia cultural.\"",
+            "\"${historyModel!.actualText}\"",
             style: AppTextStyle.bodyTextSm,
           ),
           const YGap(
@@ -48,7 +51,7 @@ class HistoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "2 days ago",
+                "${timeago.format(historyModel!.date)}",
                 style: AppTextStyle.bodyTextSm,
               ),
               Text(
