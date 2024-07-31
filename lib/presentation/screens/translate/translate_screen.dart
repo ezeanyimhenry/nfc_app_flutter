@@ -12,7 +12,7 @@ import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/select_language_sheet.dart';
 import 'package:provider/provider.dart';
 
-import '../history/logic/sharedPreference.dart';
+import '../history/logic/shared_preference.dart';
 import '../history/models/history_model.dart';
 
 class TranslateScreen extends StatefulWidget {

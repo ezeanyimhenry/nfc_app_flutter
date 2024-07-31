@@ -11,7 +11,7 @@ import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
-import '../history/logic/sharedPreference.dart';
+import '../history/logic/shared_preference.dart';
 
 class TextRecordScreen extends StatefulWidget {
   const TextRecordScreen({super.key});

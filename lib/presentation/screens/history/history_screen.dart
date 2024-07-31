@@ -6,7 +6,7 @@ import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/presentation/widgets/history_card.dart';
 
-import 'logic/sharedPreference.dart';
+import 'logic/shared_preference.dart';
 import 'models/history_model.dart';
 
 class HistoryScreen extends StatefulWidget {
