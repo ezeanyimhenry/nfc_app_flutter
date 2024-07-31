@@ -193,7 +193,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
   bool nfcEnabled = true;
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     NfcManager.instance.isAvailable().then((c) {
       setState(() {

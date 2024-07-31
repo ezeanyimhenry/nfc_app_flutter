@@ -6,8 +6,6 @@ import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/presentation/screens/home.dart';
 import 'package:nfc_app/presentation/screens/watch_demo_screen.dart';
 
-import 'history/logic/shared_preference.dart';
-import 'history/models/history_model.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
