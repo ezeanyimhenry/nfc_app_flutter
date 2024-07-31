@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_app/notifier/nfc_broadcast_receiver.dart';
+import 'package:nfc_app/presentation/screens/home.dart';
 import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
@@ -54,7 +55,8 @@ class NFCNotifier extends ChangeNotifier {
             if (nfcOperation == NFCOperation.read) {
               await _readFromTag(tag: nfcTag, context: context);
             } else if (nfcOperation == NFCOperation.write) {
-              await _writeToTag(nfcTag: nfcTag, content: content);
+              await _writeToTag(
+                  nfcTag: nfcTag, content: content, context: context);
               _message = "DONE";
             }
 
@@ -144,9 +146,36 @@ class NFCNotifier extends ChangeNotifier {
   Future<void> _writeToTag({
     required NfcTag nfcTag,
     required String content,
+    required BuildContext context,
   }) async {
     NdefMessage message = _createNdefMessage(content: content);
     await Ndef.from(nfcTag)?.write(message);
+    showModalBottomSheet(
+      isDismissible: false,
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: AppBottomsheet(
+            hasPrimaryButton: true,
+            primaryButtonText: "Continue",
+            primaryButtonOnTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(initialIndex: 0),
+                ),
+              );
+            },
+            message: "",
+            title: "Write Successful!",
+            centerContent: const ProgressIndicatorWithText(
+              progress: 1.0,
+            ),
+          ),
+        );
+      },
+    );
   }
 
   NdefMessage _createNdefMessage({required String content}) {
@@ -157,7 +186,7 @@ class NFCNotifier extends ChangeNotifier {
     _isProcessing = false;
     _message = error.toString();
     notifyListeners();
-    NfcManager.instance.stopSession(); // Ensure session is stopped
+    NfcManager.instance.stopSession();
   }
 }
 

@@ -23,7 +23,7 @@ class ReadNFCScreen extends StatefulWidget {
 }
 
 class _ReadNFCScreenState extends State<ReadNFCScreen> {
-  bool _nfcEnabled = false;
+  bool _nfcEnabled = true;
   @override
   void initState() {
     super.initState();
@@ -85,6 +85,16 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
                         );
                         _showInitialBottomSheet(context);
                       },
+                      text: 'Scan NFC tag',
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: !_nfcEnabled,
+                  child: SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.6,
+                    child: InactiveButton(
+                      onTap: () {},
                       text: 'Scan NFC tag',
                     ),
                   ),

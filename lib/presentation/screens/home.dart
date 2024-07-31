@@ -9,7 +9,10 @@ import '../../notifier/bottom_nav.dart';
 import 'read-nfc/read_nfc_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, this.initialIndex = 0});
+
+  final int initialIndex;
+
   final List<Widget> _screens = const [
     ReadNFCScreen(),
     TextRecordScreen(),
@@ -18,13 +21,16 @@ class HomeScreen extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Consumer<BottomNavigationProvider>(
-      builder: (context, provider, child) {
-        return _screens[provider.currentIndex];
-      },
-    ), bottomNavigationBar:
-        Consumer<BottomNavigationProvider>(builder: (context, provider, child) {
-      return AppBottomNav(selectedindex: provider.currentIndex);
-    }));
+    return ChangeNotifierProvider(
+      create: (context) => BottomNavigationProvider()..setIndex(initialIndex),
+      child: Scaffold(body: Consumer<BottomNavigationProvider>(
+        builder: (context, provider, child) {
+          return _screens[provider.currentIndex];
+        },
+      ), bottomNavigationBar: Consumer<BottomNavigationProvider>(
+          builder: (context, provider, child) {
+        return AppBottomNav(selectedindex: provider.currentIndex);
+      })),
+    );
   }
 }

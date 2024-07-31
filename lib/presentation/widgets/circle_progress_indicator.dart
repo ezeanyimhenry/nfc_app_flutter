@@ -15,7 +15,7 @@ class ProgressIndicatorWithText extends StatefulWidget {
 }
 
 class ProgressIndicatorWithTextState extends State<ProgressIndicatorWithText> {
-  double _progress = 0.5;
+  double _progress = 1.0;
 
   void updateProgress(double progress) {
     setState(() {
