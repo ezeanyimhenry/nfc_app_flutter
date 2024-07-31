@@ -52,7 +52,7 @@ class NFCNotifier extends ChangeNotifier {
       }
     } catch (e) {
       _isProcessing = false;
-      _message = e.toString();
+      _message = e.toString();git
       notifyListeners();
     }
   }
