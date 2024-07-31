@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_app/presentation/screens/history/history_screen.dart';
 import 'package:nfc_app/presentation/screens/settings/settings_screen.dart';
-import 'package:nfc_app/presentation/screens/write-nfc/write_nfc_screen.dart';
+import 'package:nfc_app/presentation/screens/write-nfc/text_record_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_nav.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   final List<Widget> _screens = const [
     ReadNFCScreen(),
-    WriteNFCScreen(),
+    TextRecordScreen(),
     HistoryScreen(),
     SettingsScreen(),
   ];
