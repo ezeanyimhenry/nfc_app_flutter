@@ -28,14 +28,16 @@ class _WatchDemoScreenState extends State<WatchDemoScreen> {
         'https://firebasestorage.googleapis.com/v0/b/landlisting-d88df.appspot.com/o/buddy.MP4?alt=media&token=$videoToken'))
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
+        setState(() {
+          _videoPlayerController.play();
+        });
       });
 
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
       aspectRatio: 16 / 9,
       autoPlay: true,
-      looping: true,
+      looping: false,
       showControls: true,
       showControlsOnInitialize: true,
       materialProgressColors: ChewieProgressColors(
@@ -120,6 +122,8 @@ class _WatchDemoScreenState extends State<WatchDemoScreen> {
               // const YGap(value: 10.0),
               PrimaryButton(
                 onTap: () {
+                  _videoPlayerController.pause();
+                  _chewieController.pause();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (txt) => const HomeScreen()));
                 },
