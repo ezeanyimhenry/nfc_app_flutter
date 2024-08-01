@@ -4,6 +4,7 @@ import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_svgs.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
+import 'package:nfc_app/presentation/screens/history/logic/shared_preference.dart';
 import 'package:nfc_app/presentation/screens/translate/model/language_data.dart';
 import 'package:nfc_app/presentation/screens/translate/model/translate_dto.dart';
 import 'package:nfc_app/presentation/screens/translate/notifier/language_notifier.dart';
