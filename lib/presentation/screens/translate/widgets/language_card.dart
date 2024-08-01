@@ -14,11 +14,12 @@ class LanguageCard extends StatelessWidget {
   const LanguageCard({
     required this.data,
     this.hasError = false,
-    this.isTranslating = false,
+    this.forfoundText = false,
+    this.isLoading = false,
     super.key,
   });
   final LanguageData data;
-  final bool isTranslating;
+  final bool isLoading, forfoundText;
   final bool hasError;
 
   // Method to copy text to clipboard
@@ -90,7 +91,7 @@ class LanguageCard extends StatelessWidget {
             style: AppTextStyle.bodyTextSemiBold,
           ),
           const YGap(value: 24),
-          isTranslating
+          isLoading
               ? Center(
                   child: SvgPicture.asset(
                     AppSvgs.loader,
@@ -100,8 +101,9 @@ class LanguageCard extends StatelessWidget {
                     ),
                   ),
                 )
-              : SelectableText(
-                  data.content,
+              : 
+              SelectableText(
+                  data.content.trim(),
                   cursorColor: AppColors.primaryColor,
                   style: TextStyle(
                     color: hasError ? AppColors.failureColor : null,
@@ -115,7 +117,16 @@ class LanguageCard extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [
+            children:forfoundText
+                ? [
+                    InkWell(
+                onTap: () {
+                  _copyToClipboard(context);
+                },
+                child: SvgPicture.asset(AppSvgs.copy),
+              ),
+                  ]
+                : [
               InkWell(
                 onTap: () {
                   _copyToClipboard(context);

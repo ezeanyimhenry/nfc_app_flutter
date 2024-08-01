@@ -12,9 +12,6 @@ import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/select_language_sheet.dart';
 import 'package:provider/provider.dart';
 
-import '../history/logic/shared_preference.dart';
-import '../history/models/history_model.dart';
-
 class TranslateScreen extends StatefulWidget {
   final String message;
   const TranslateScreen({super.key, required this.message});
@@ -31,18 +28,10 @@ class _TranslateScreenState extends State<TranslateScreen> {
     super.initState();
     languageNotifier = context.read<LanguageNotifier>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadDefaultLanguage().then((_) {
         translateReadMessage();
-      });
     });
   }
 
-  Future<void> _loadDefaultLanguage() async {
-    String lang = await AppSharedPreference().getDefaultLanguage();
-    setState(() {
-      languageNotifier.setTargetLanguage(lang.isNotEmpty ? lang : 'English');
-    });
-  }
 
   void translateReadMessage() async {
     final languageNotifier = context.read<LanguageNotifier>();
@@ -53,16 +42,6 @@ class _TranslateScreenState extends State<TranslateScreen> {
         targetLanguage: languageNotifier.languageToBeTranslatedTo,
       ),
     );
-    // save to history
-    List<HistoryModel> loadedHistoryList =
-        await AppSharedPreference().getHistoryList();
-    loadedHistoryList.add(HistoryModel(
-        label: LanguageType.source,
-        language: languageNotifier.languageToBeTranslatedTo,
-        date: DateTime.now(),
-        actualText: widget.message,
-        type: HistoryType.read));
-    await AppSharedPreference().saveHistoryList(loadedHistoryList);
   }
 
   @override
@@ -78,6 +57,7 @@ class _TranslateScreenState extends State<TranslateScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
+        surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.white,
         title: Text(
           "Translate",
@@ -93,12 +73,12 @@ class _TranslateScreenState extends State<TranslateScreen> {
               data: LanguageData(
                 content: widget.message,
                 type: LanguageType.source,
-                name: translateResponse.detectedLanguage ?? "",
+                name: languageNotifier.detectResponse.detectedLanguage ?? "",
               ),
             ),
             const YGap(),
             LanguageCard(
-              isTranslating: isTranslating,
+              isLoading: isTranslating,
               hasError: !translateResponse.isSuccessful,
               data: LanguageData(
                 content: translateResponse.isSuccessful
@@ -110,22 +90,42 @@ class _TranslateScreenState extends State<TranslateScreen> {
             ),
             YGap(value: screenHeight * 0.16),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Source Language:",
-                  style: AppTextStyle.bodyTextSemiBold,
-                ),
-                Text(
-                  translateResponse.detectedLanguage ?? "",
-                  style: AppTextStyle.bodyTextSm.copyWith(
-                    color: translateResponse.isSuccessful
-                        ? null
-                        : AppColors.failureColor,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Source Language:",
+                    style: AppTextStyle.bodyTextSemiBold,
                   ),
-                )
-              ],
+                Container(height: 40,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.miscellaneousTextColor),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            languageNotifier.detectResponse.detectedLanguage ?? "",
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyle.bodyTextSm,
+                          ),
+                          const XGap(),
+                          const Icon(
+                            Icons.lock_outline_rounded,
+                            size: 20,
+                            color: AppColors.secondaryTextColor,
+                          )
+                        ],
+                      ),
+                    )
+                ],
+              
             ),
             const YGap(),
             Row(
@@ -146,18 +146,32 @@ class _TranslateScreenState extends State<TranslateScreen> {
                       translateReadMessage();
                     });
                   },
-                  child: Row(
-                    children: [
-                      Text(
-                        languageNotifier.languageToBeTranslatedTo,
-                        style: AppTextStyle.bodyTextSm,
-                      ),
-                      const XGap(value: 4),
-                      const Icon(
-                        Icons.keyboard_arrow_down,
-                        color: AppColors.secondaryTextColor,
-                      )
-                    ],
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      border:
+                          Border.all(color: AppColors.miscellaneousTextColor),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          languageNotifier.languageToBeTranslatedTo,
+                          style: AppTextStyle.bodyTextSm,
+                        ),
+                        const XGap(),
+                        const Icon(
+                          Icons.arrow_drop_down,
+                          size: 16,
+                          color: AppColors.secondaryTextColor,
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],
