@@ -90,10 +90,8 @@ We welcome contributions to Translate Buddy! Please follow these guidelines:
 ## Download the Demo
 
 ### APK Download
-- [Download APK]()
+- [Download APK](https://drive.google.com/drive/folders/1M8kzzMlBLjiyUq6no06C-_BSg8A7GNlL)
 
-### Appetize.io Demo
-- [Open Appetize.io Demo]()
 
 ## License
 
