@@ -6,10 +6,44 @@ import 'package:nfc_app/presentation/screens/translate/model/translate_dto.dart'
 import 'package:nfc_app/presentation/screens/translate/model/translate_response.dart';
 
 class TranslateRepository {
-  Future<TranslateAndDetectResponse> translateMessage(
+  Future<DetectResponseModel> detectLanguageOfMessage(String message) async {
+    final String apiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
+    
+    final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
+    try {
+      final content2 = [
+        Content.text(
+            'Detect and display only the language of this text, no unneccessary comments, just the detected language name: $message'),
+      ];
+      final detectResponse = await model.generateContent(content2);
+      print("dtctdRsp => ${detectResponse.text}");
+      return DetectResponseModel(
+        isSuccessful: true,
+        detectedLanguage: detectResponse.text ?? "No response, try again",
+      );
+    } on SocketException {
+      return DetectResponseModel(
+        isSuccessful: false,
+        errorMessage: "Kindly check your internet connection",
+      );
+    }on GenerativeAIException catch (e) {
+      return DetectResponseModel(
+        isSuccessful: false,
+        errorMessage: e.message,
+      );
+    } catch (e) {
+      return const DetectResponseModel(
+        isSuccessful: false,
+        errorMessage: 'Sorry, I am not trained enough to detect this',
+      );
+    }
+  }
+
+  Future<TranslateResponseModel> translateMessage(
     TranslateDTO dto,
   ) async {
     final String apiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
+    
 
     try {
       if (apiKey.isEmpty) {}
@@ -20,30 +54,25 @@ class TranslateRepository {
         Content.text(
             'Translate simply to general ${dto.targetLanguage} language, no unneccessary comments, just the translated result: ${dto.message}'),
       ];
-      final content2 = [
-        Content.text(
-            'Detect and display only the language of this text, no unneccessary comments, just the detected language name: ${dto.message}'),
-      ];
+     
       final translateResponse = await model.generateContent(content1);
-      final detectResponse = await model.generateContent(content2);
 
-      return TranslateAndDetectResponse(
+      return TranslateResponseModel(
         isSuccessful: true,
-        detectedLanguage: detectResponse.text ?? "Unable to detect",
         translatedMessage: translateResponse.text ?? "No response, try again",
       );
     } on SocketException {
-      return const TranslateAndDetectResponse(
+      return const TranslateResponseModel(
         isSuccessful: false,
         errorMessage: "Kindly check your internet connection",
       );
     } on GenerativeAIException catch (e) {
-      return TranslateAndDetectResponse(
+      return TranslateResponseModel(
         isSuccessful: false,
         errorMessage: e.message,
       );
     } catch (e) {
-      return const TranslateAndDetectResponse(
+      return const TranslateResponseModel(
         isSuccessful: false,
         errorMessage: 'Sorry, I am not trained enough to translate this',
       );

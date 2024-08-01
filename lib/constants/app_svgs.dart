@@ -5,4 +5,5 @@ class AppSvgs{
   static const upload = "$_basePath/upload.svg";
   static const search = "$_basePath/search.svg";
   static const loader = "$_basePath/loader.svg";
+   static const caretDown = "$_basePath/caret_down.svg";
 }

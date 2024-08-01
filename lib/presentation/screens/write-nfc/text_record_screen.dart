@@ -5,7 +5,7 @@ import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
 import 'package:nfc_app/presentation/screens/history/models/history_model.dart';
-import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
+import 'package:nfc_app/presentation/screens/translate/text_found_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
@@ -205,10 +205,12 @@ class _TextRecordScreenState extends State<TextRecordScreen> {
                               primaryButtonText: "Continue",
                               primaryButtonOnTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (txt) => TranslateScreen(
-                                            message: provider.readContent)));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (txt) => TextFoundScreen(
+                                        foundText: provider.readContent),
+                                  ),
+                                );
                               },
                               message: "Make sure your device is well placed.",
                               title: "Scan Successful!",

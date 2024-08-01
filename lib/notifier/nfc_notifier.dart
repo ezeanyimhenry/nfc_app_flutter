@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_app/notifier/nfc_broadcast_receiver.dart';
 import 'package:nfc_app/presentation/screens/home.dart';
-import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
+import 'package:nfc_app/presentation/screens/translate/text_found_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -117,7 +117,7 @@ class NFCNotifier extends ChangeNotifier {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TranslateScreen(message: readContent),
+                    builder: (context) => TextFoundScreen(foundText: readContent),
                   ),
                 );
               },

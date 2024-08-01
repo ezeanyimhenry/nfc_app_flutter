@@ -9,8 +9,11 @@ class LanguageNotifier extends ChangeNotifier {
   final TranslateRepository translateRepository;
 
   bool isTranslating = false;
-  TranslateAndDetectResponse translateResponse =
-      TranslateAndDetectResponse.initial();
+  bool isDetecting = false;
+  TranslateResponseModel translateResponse =
+      TranslateResponseModel.initial();
+
+     DetectResponseModel detectResponse = DetectResponseModel.initial();
   
   /// This is the default language (initial state)
   /// It would be the language the user selects in settings
@@ -42,5 +45,16 @@ class LanguageNotifier extends ChangeNotifier {
     updateTranslatingTo(true);
     translateResponse = await translateRepository.translateMessage(dto);
     updateTranslatingTo(false);
+  }
+
+
+void updateIsDetecting(bool state) {
+    isDetecting = state;
+    notifyListeners();
+  }
+  void detectLanguage(String message) async {
+    updateIsDetecting(true);
+    detectResponse = await translateRepository.detectLanguageOfMessage(message);
+    updateIsDetecting(false);
   }
 }

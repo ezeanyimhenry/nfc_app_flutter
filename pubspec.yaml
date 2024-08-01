@@ -45,6 +45,7 @@ dependencies:
   android_intent: ^2.0.2
   shared_preferences: ^2.2.3
   timeago: ^3.7.0
+  share_plus: ^10.0.0
 
 dev_dependencies:
   flutter_test:

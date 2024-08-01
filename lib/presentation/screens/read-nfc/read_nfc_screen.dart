@@ -8,7 +8,7 @@ import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
 // import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
-import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
+import 'package:nfc_app/presentation/screens/translate/text_found_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
@@ -184,7 +184,7 @@ class _ReadNFCScreenState extends State<ReadNFCScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TranslateScreen(message: readContent),
+                  builder: (context) => TextFoundScreen(foundText: readContent),
                 ),
               );
             },
