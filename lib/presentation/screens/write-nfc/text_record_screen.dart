@@ -6,6 +6,7 @@ import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
 import 'package:nfc_app/presentation/screens/history/models/history_model.dart';
+import 'package:nfc_app/presentation/screens/translate/model/language_data.dart';
 import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
@@ -159,6 +160,7 @@ class _TextRecordScreenState extends State<TextRecordScreen> {
                           List<HistoryModel> loadedHistoryList =
                               await AppSharedPreference().getHistoryList();
                           loadedHistoryList.add(HistoryModel(
+                              label: LanguageType.target,
                               language: "English",
                               date: DateTime.now(),
                               actualText: controller.text,

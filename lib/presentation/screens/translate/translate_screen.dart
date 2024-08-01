@@ -33,10 +33,11 @@ class _TranslateScreenState extends State<TranslateScreen> {
         targetLanguage: languageNotifier.languageToBeTranslatedTo,
       ),
     );
-    //save to history
+    // save to history
     List<HistoryModel> loadedHistoryList =
         await AppSharedPreference().getHistoryList();
     loadedHistoryList.add(HistoryModel(
+        label: LanguageType.source,
         language: languageNotifier.languageToBeTranslatedTo,
         date: DateTime.now(),
         actualText: widget.message,
