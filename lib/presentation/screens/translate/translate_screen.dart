@@ -4,7 +4,6 @@ import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_svgs.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
-import 'package:nfc_app/presentation/screens/history/logic/shared_preference.dart';
 import 'package:nfc_app/presentation/screens/translate/model/language_data.dart';
 import 'package:nfc_app/presentation/screens/translate/model/translate_dto.dart';
 import 'package:nfc_app/presentation/screens/translate/notifier/language_notifier.dart';
@@ -29,18 +28,10 @@ class _TranslateScreenState extends State<TranslateScreen> {
     super.initState();
     languageNotifier = context.read<LanguageNotifier>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadDefaultLanguage().then((_) {
         translateReadMessage();
-      });
     });
   }
 
-  Future<void> _loadDefaultLanguage() async {
-    String lang = await AppSharedPreference().getDefaultLanguage();
-    setState(() {
-      languageNotifier.setTargetLanguage(lang.isNotEmpty ? lang : 'English');
-    });
-  }
 
   void translateReadMessage() async {
     final languageNotifier = context.read<LanguageNotifier>();
@@ -58,7 +49,6 @@ class _TranslateScreenState extends State<TranslateScreen> {
     final languageNotifier = context.watch<LanguageNotifier>();
 
     final screenHeight = MediaQuery.sizeOf(context).height;
-    final screenWidth = MediaQuery.sizeOf(context).width;
 
     final isTranslating = languageNotifier.isTranslating;
     final translateResponse = languageNotifier.translateResponse;
@@ -107,8 +97,7 @@ class _TranslateScreenState extends State<TranslateScreen> {
                     "Source Language:",
                     style: AppTextStyle.bodyTextSemiBold,
                   ),
-                Container(height: 44,
-                      width: screenWidth * 0.32,
+                Container(height: 40,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 10,
@@ -158,7 +147,6 @@ class _TranslateScreenState extends State<TranslateScreen> {
                     });
                   },
                   child: Container(
-                    width: screenWidth * 0.32,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -174,7 +162,6 @@ class _TranslateScreenState extends State<TranslateScreen> {
                       children: [
                         Text(
                           languageNotifier.languageToBeTranslatedTo,
-                          overflow: TextOverflow.ellipsis,
                           style: AppTextStyle.bodyTextSm,
                         ),
                         const XGap(),

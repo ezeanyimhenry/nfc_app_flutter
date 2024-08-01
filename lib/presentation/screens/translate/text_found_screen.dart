@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
+import 'package:nfc_app/presentation/screens/history/logic/shared_preference.dart';
 import 'package:nfc_app/presentation/screens/translate/model/language_data.dart';
 import 'package:nfc_app/presentation/screens/translate/notifier/language_notifier.dart';
 import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
@@ -26,10 +27,18 @@ class _TextFoundScreenState extends State<TextFoundScreen> {
     final languageNotifier = context.read<LanguageNotifier>();
     languageNotifier.detectLanguage(widget.foundText);
   }
+  Future<void> _loadDefaultLanguage() async {
 
+   final languageNotifier = context.read<LanguageNotifier>();
+    String lang = await AppSharedPreference().getDefaultLanguage();
+    setState(() {
+      languageNotifier.setTargetLanguage(lang.isNotEmpty ? lang : 'English');
+    });
+  }
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+     _loadDefaultLanguage();
       detectLanguage();
     });
     super.initState();
