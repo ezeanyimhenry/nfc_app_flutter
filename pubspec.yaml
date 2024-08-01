@@ -45,7 +45,10 @@ dependencies:
   android_intent: ^2.0.2
   shared_preferences: ^2.2.3
   timeago: ^3.7.0
-  share_plus: ^10.0.0
+  video_player: ^2.8.6
+  youtube_player_flutter: ^9.0.1
+  chewie: ^1.8.2
+  share: ^2.0.4
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +83,7 @@ flutter:
   assets:
     - .env
     - assets/
+    - assets/video/
     - assets/icons/svg/
     - assets/icons/png/
 

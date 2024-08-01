@@ -24,7 +24,7 @@ class HistoryCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Source Language - ${historyModel!.language}",
+            "${historyModel!.label.name} Language - ${historyModel!.language}",
             style: AppTextStyle.bodyTextSemiBold,
           ),
           const YGap(

@@ -1,12 +1,63 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
+import 'package:video_player/video_player.dart';
 
-class WatchDemoScreen extends StatelessWidget {
+import 'home.dart';
+
+class WatchDemoScreen extends StatefulWidget {
   const WatchDemoScreen({super.key});
+
+  @override
+  State<WatchDemoScreen> createState() => _WatchDemoScreenState();
+}
+
+class _WatchDemoScreenState extends State<WatchDemoScreen> {
+  late VideoPlayerController _videoPlayerController;
+  late ChewieController _chewieController;
+  @override
+  void initState() {
+    final String videoToken = dotenv.env['VIDEO_TOKEN'] ?? '';
+    super.initState();
+    _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(
+        'https://firebasestorage.googleapis.com/v0/b/landlisting-d88df.appspot.com/o/buddy.MP4?alt=media&token=$videoToken'))
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {
+          _videoPlayerController.play();
+        });
+      });
+
+    _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController,
+      aspectRatio: 16 / 9,
+      autoPlay: true,
+      looping: false,
+      showControls: true,
+      showControlsOnInitialize: true,
+      materialProgressColors: ChewieProgressColors(
+        playedColor: Colors.red,
+        handleColor: Colors.red,
+        backgroundColor: Colors.grey,
+        bufferedColor: Colors.lightGreen,
+      ),
+      placeholder: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    _chewieController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +91,15 @@ class WatchDemoScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    color: AppColors.primaryColor,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: AppColors.primaryColor,
+                    ),
                     width: double.infinity,
                     height: 356,
+                    child: Chewie(
+                      controller: _chewieController,
+                    ),
                   ),
                   const YGap(value: 32.0),
                   Text(
@@ -64,7 +121,12 @@ class WatchDemoScreen extends StatelessWidget {
               ),
               // const YGap(value: 10.0),
               PrimaryButton(
-                onTap: () {},
+                onTap: () {
+                  _videoPlayerController.pause();
+                  _chewieController.pause();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (txt) => const HomeScreen()));
+                },
                 text: 'Get Started',
               ),
             ],

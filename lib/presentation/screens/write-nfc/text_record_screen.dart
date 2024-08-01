@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:nfc_app/constants/app_colors.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
+import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/notifier/nfc_notifier.dart';
 import 'package:nfc_app/presentation/screens/history/models/history_model.dart';
 import 'package:nfc_app/presentation/screens/translate/text_found_screen.dart';
+import 'package:nfc_app/presentation/screens/translate/model/language_data.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/circle_progress_indicator.dart';
@@ -71,24 +73,15 @@ class _TextRecordScreenState extends State<TextRecordScreen> {
       create: (context) => NFCNotifier(),
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          centerTitle: false,
           backgroundColor: AppColors.backgroundColor2,
-          leading: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: SvgPicture.asset(
-              'assets/arrow_left.svg',
-              fit: BoxFit.scaleDown,
-            ),
-          ),
           title: Text(
-            'Text Record',
-            style: GoogleFonts.inter(
-              color: AppColors.primaryTextColor,
-              fontSize: 20.0,
-              fontWeight: FontWeight.w700,
-            ),
+            'Write To NFC Tag',
+            style: AppTextStyle.alertDialogHeading,
           ),
         ),
-        body: Padding(
+        body: SingleChildScrollView(
           padding: AllPadding.padding16,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,82 +89,111 @@ class _TextRecordScreenState extends State<TextRecordScreen> {
               Column(
                 children: [
                   Text(
-                    'Enter Text Record',
-                    style: GoogleFonts.inter(
-                      color: AppColors.primaryTextColor,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    'Type or paste the text you want to store on the NFC Tag and select ‘’Write Data’’ below.',
+                    style: AppTextStyle.bodyText,
                   ),
                   const YGap(value: 16.0),
-                  SizedBox(
-                    height: 121.0,
-                    child: TextField(
-                      controller: controller,
-                      maxLines: 4, // Allow up to 3 lines of text
-                      // minLines: 4, // Ensure at least one line is visible
-                      decoration: const InputDecoration(
-                        alignLabelWithHint: true,
-                        labelText: 'Enter text here',
-                        // labelStyle: ,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.primaryColor),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: controller,
+                          maxLines: null,
+                          minLines: 10,
+                          decoration: InputDecoration(
+                            alignLabelWithHint: true,
+                            labelText: 'Enter text here',
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            constraints: BoxConstraints(
+                              maxHeight: 300,
+                            ),
+                            contentPadding: EdgeInsets.all(12.0),
                           ),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.primaryColor,
+                        SizedBox(height: 8.0),
+                        Divider(
+                          color: AppColors.dividerColour,
+                          thickness: 1,
+                        ),
+                        SizedBox(height: 8.0),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: IconButton(
+                            icon:
+                                SvgPicture.asset('assets/icons/svg/paste.svg'),
+                            onPressed: () async {
+                              final clipboardData =
+                                  await Clipboard.getData('text/plain');
+                              if (clipboardData != null) {
+                                controller.text = clipboardData.text ?? '';
+                              }
+                            },
                           ),
                         ),
-                        constraints: BoxConstraints(
-                          maxHeight: 121,
-                        ),
-                      ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              const YGap(value: 16.0),
-              PrimaryButton(
-                  onTap: () async {
-                    if (_nfcEnabled) {
-                      writeToNfc();
-                      //save to history
-                      List<HistoryModel> loadedHistoryList =
-                          await AppSharedPreference().getHistoryList();
-                      loadedHistoryList.add(HistoryModel(
-                          language: "English",
-                          date: DateTime.now(),
-                          actualText: controller.text,
-                          type: HistoryType.written));
-                      await AppSharedPreference()
-                          .saveHistoryList(loadedHistoryList);
-                    } else {
-                      showModalBottomSheet(
-                          isDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.4,
-                              child: AppBottomsheet(
-                                message:
-                                    "Failed to write data to the NFC tag. Please try again.",
-                                title: "Write Operation Failed",
-                                centerContent: SvgPicture.asset(
-                                    'assets/icons/svg/nfc_unavailable.svg'),
-                                hasPrimaryButton: true,
-                                primaryButtonText: 'Try Again',
-                                primaryButtonOnTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            );
-                          });
-                    }
-                  },
-                  text: 'Add'),
+              const YGap(value: 70.0),
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: PrimaryButton(
+                      onTap: () async {
+                        if (_nfcEnabled) {
+                          writeToNfc();
+                          //save to history
+                          List<HistoryModel> loadedHistoryList =
+                              await AppSharedPreference().getHistoryList();
+                          loadedHistoryList.add(HistoryModel(
+                              label: LanguageType.target,
+                              language: "English",
+                              date: DateTime.now(),
+                              actualText: controller.text,
+                              type: HistoryType.written));
+                          await AppSharedPreference()
+                              .saveHistoryList(loadedHistoryList);
+                        } else {
+                          showModalBottomSheet(
+                              isDismissible: false,
+                              context: context,
+                              builder: (context) {
+                                return SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.4,
+                                  child: AppBottomsheet(
+                                    message:
+                                        "Failed to write data to the NFC tag. Please try again.",
+                                    title: "Write Operation Failed",
+                                    centerContent: SvgPicture.asset(
+                                        'assets/icons/svg/nfc_unavailable.svg'),
+                                    hasPrimaryButton: true,
+                                    primaryButtonText: 'Try Again',
+                                    primaryButtonOnTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                );
+                              });
+                        }
+                      },
+                      text: 'Write Data'),
+                ),
+              ),
               Consumer<NFCNotifier>(builder: (context, provider, _) {
                 if (provider.isProcessing) {
                   // return const CircularProgressIndicator();

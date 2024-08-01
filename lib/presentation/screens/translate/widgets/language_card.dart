@@ -8,7 +8,7 @@ import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/presentation/screens/history/logic/shared_preference.dart';
 import 'package:nfc_app/presentation/screens/history/models/history_model.dart';
 import 'package:nfc_app/presentation/screens/translate/model/language_data.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:share/share.dart';
 
 class LanguageCard extends StatelessWidget {
   const LanguageCard({
@@ -21,6 +21,60 @@ class LanguageCard extends StatelessWidget {
   final LanguageData data;
   final bool isLoading, forfoundText;
   final bool hasError;
+
+  // Method to copy text to clipboard
+  void _copyToClipboard(BuildContext context) {
+    Clipboard.setData(ClipboardData(text: data.content)).then((_) {
+      // Show a snackbar to confirm the copy action
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Copied to clipboard'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    });
+  }
+
+  // Method to share text
+  void _shareText(BuildContext context) {
+    Share.share(data.content, subject: 'Shared content from Translate Buddy');
+  }
+
+  Future<void> _saveToHistory(BuildContext context) async {
+    try {
+      // Fetch existing history list
+      List<HistoryModel> loadedHistoryList =
+          await AppSharedPreference().getHistoryList();
+
+      // Validate data before adding to the history list
+      // final String label = data.type.label ?? 'Unknown';
+      final String language = data.name;
+      final String content = data.content;
+
+      // Add new history entry
+      loadedHistoryList.add(HistoryModel(
+        label: LanguageType.source,
+        language: language,
+        date: DateTime.now(),
+        actualText: content,
+        type: HistoryType.read,
+      ));
+
+      // Save updated history list
+      await AppSharedPreference().saveHistoryList(loadedHistoryList);
+
+      // Optionally show a message to indicate success
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Saved to history!')),
+      );
+    } catch (e) {
+      // Optionally show an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to save to history')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -63,75 +117,37 @@ class LanguageCard extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: forfoundText
+            children:forfoundText
                 ? [
                     InkWell(
-                      onTap: () {
-                        Clipboard.setData(ClipboardData(text: data.content))
-                            .then(
-                          (_) => ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                "Copied",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              backgroundColor: AppColors.primaryColor,
-                            ),
-                          ),
-                        );
-                      },
-                      child: SvgPicture.asset(AppSvgs.copy),
-                    ),
+                onTap: () {
+                  _copyToClipboard(context);
+                },
+                child: SvgPicture.asset(AppSvgs.copy),
+              ),
                   ]
                 : [
-                    InkWell(
-                      onTap: () {
-                        Clipboard.setData(ClipboardData(text: data.content))
-                            .then(
-                          (_) => ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                "Copied",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              backgroundColor: AppColors.primaryColor,
-                            ),
-                          ),
-                        );
-                      },
-                      child: SvgPicture.asset(AppSvgs.copy),
-                    ),
-                    const XGap(value: 8),
-                    InkWell(
-                      onTap: () async {
-                        List<HistoryModel> loadedHistoryList =
-                            await AppSharedPreference().getHistoryList();
-                        loadedHistoryList.add(HistoryModel(
-                            language: data.name,
-                            date: DateTime.now(),
-                            actualText: data.content,
-                            type: HistoryType.read));
-                         AppSharedPreference()
-                            .saveHistoryList(loadedHistoryList) .then(
-                          (_) => ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                "Saved",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              backgroundColor: AppColors.primaryColor,
-                            ),
-                          ),
-                        );
-                      },
-                      child: SvgPicture.asset(AppSvgs.save),
-                    ),
-                    const XGap(value: 8),
-                    InkWell(
-                      onTap: () =>Share.share(data.content),
-                      child: SvgPicture.asset(AppSvgs.upload),
-                    )
-                  ],
+              InkWell(
+                onTap: () {
+                  _copyToClipboard(context);
+                },
+                child: SvgPicture.asset(AppSvgs.copy),
+              ),
+              const XGap(value: 8),
+              InkWell(
+                onTap: () {
+                  _saveToHistory(context);
+                },
+                child: SvgPicture.asset(AppSvgs.save),
+              ),
+              const XGap(value: 8),
+              InkWell(
+                onTap: () {
+                  _shareText(context);
+                },
+                child: SvgPicture.asset(AppSvgs.upload),
+              )
+            ],
           )
         ],
       ),

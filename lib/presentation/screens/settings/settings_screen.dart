@@ -4,6 +4,7 @@ import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
 import 'package:nfc_app/presentation/screens/settings/privacy_policy.dart';
 import 'package:nfc_app/presentation/screens/settings/settings_language_screen.dart';
+// import 'package:nfc_app/presentation/screens/translate/translate_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 
 class SettingsScreen extends StatelessWidget {

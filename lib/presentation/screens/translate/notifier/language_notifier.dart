@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_app/models/languages.dart';
+import 'package:nfc_app/presentation/screens/history/logic/shared_preference.dart';
 import 'package:nfc_app/presentation/screens/translate/model/translate_dto.dart';
 import 'package:nfc_app/presentation/screens/translate/model/translate_response.dart';
 import 'package:nfc_app/presentation/screens/translate/repository/translate_repository.dart';
@@ -18,6 +19,18 @@ class LanguageNotifier extends ChangeNotifier {
   /// This is the default language (initial state)
   /// It would be the language the user selects in settings
   String languageToBeTranslatedTo = "English";
+
+  Future<void> languageDefault() async {
+    try {
+      String lang = await AppSharedPreference().getDefaultLanguage();
+      languageToBeTranslatedTo =
+          lang.isNotEmpty ? lang : "English"; // Fallback to a default value
+      notifyListeners();
+    } catch (e) {
+      languageToBeTranslatedTo = "English"; // Fallback
+      notifyListeners();
+    }
+  }
 
   void setTargetLanguage(String language) {
     languageToBeTranslatedTo = language;
