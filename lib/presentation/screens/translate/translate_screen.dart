@@ -24,6 +24,26 @@ class TranslateScreen extends StatefulWidget {
 }
 
 class _TranslateScreenState extends State<TranslateScreen> {
+  late LanguageNotifier languageNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    languageNotifier = context.read<LanguageNotifier>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadDefaultLanguage().then((_) {
+        translateReadMessage();
+      });
+    });
+  }
+
+  Future<void> _loadDefaultLanguage() async {
+    String lang = await AppSharedPreference().getDefaultLanguage();
+    setState(() {
+      languageNotifier.setTargetLanguage(lang.isNotEmpty ? lang : 'English');
+    });
+  }
+
   void translateReadMessage() async {
     final languageNotifier = context.read<LanguageNotifier>();
     languageNotifier.translateMessage(
@@ -43,14 +63,6 @@ class _TranslateScreenState extends State<TranslateScreen> {
         actualText: widget.message,
         type: HistoryType.read));
     await AppSharedPreference().saveHistoryList(loadedHistoryList);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      translateReadMessage();
-    });
   }
 
   @override

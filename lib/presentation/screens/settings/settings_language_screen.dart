@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nfc_app/constants/app_spacing.dart';
 import 'package:nfc_app/constants/app_textstyles.dart';
+import 'package:nfc_app/presentation/screens/history/logic/shared_preference.dart';
 import 'package:nfc_app/presentation/widgets/app_buttons.dart';
 import 'package:nfc_app/presentation/widgets/select_language_sheet.dart';
 
@@ -13,8 +14,22 @@ class SettingsLanguagecreen extends StatefulWidget {
 }
 
 class _SettingsLanguagecreenState extends State<SettingsLanguagecreen> {
-  String _selectedLanguage = 'Spanish';
+  String _selectedLanguage = 'English';
   bool _languageSelected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDefaultLanguage();
+  }
+
+  Future<void> _loadDefaultLanguage() async {
+    String lang = await AppSharedPreference().getDefaultLanguage();
+    setState(() {
+      _selectedLanguage = lang.isNotEmpty ? lang : 'English';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +101,13 @@ class _SettingsLanguagecreenState extends State<SettingsLanguagecreen> {
                   ),
                   if (_languageSelected)
                     PrimaryButton(
-                      onTap: () {},
+                      onTap: () {
+                        AppSharedPreference()
+                            .setDefaultLanguage(_selectedLanguage);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Saved!')),
+                        );
+                      },
                       text: 'Save',
                     )
                   else
