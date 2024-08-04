@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_app/notifier/nfc_broadcast_receiver.dart';
 import 'package:nfc_app/presentation/screens/home.dart';
 import 'package:nfc_app/presentation/screens/translate/text_found_screen.dart';
 import 'package:nfc_app/presentation/widgets/app_bottom_sheet.dart';
@@ -17,30 +16,11 @@ class NFCNotifier extends ChangeNotifier {
   String get message => _message;
   String get readContent => _readContent;
 
-  final NfcBroadcastReceiver _nfcBroadcastReceiver;
-
-  NFCNotifier() : _nfcBroadcastReceiver = NfcBroadcastReceiver() {
-    _nfcBroadcastReceiver.events.listen((event) {
-      // Update state based on the NFC event
-      _readContent = event.toString();
-      _isProcessing = false; // NFC operation is complete
-      notifyListeners();
-    });
-  }
-
-  @override
-  void dispose() {
-    _nfcBroadcastReceiver.dispose();
-    super.dispose();
-  }
-
   Future<void> startNFCOperation({
     required NFCOperation nfcOperation,
     String content = "",
     required BuildContext context,
   }) async {
-    //history
-
     try {
       _isProcessing = true;
       _message =
@@ -82,28 +62,24 @@ class NFCNotifier extends ChangeNotifier {
     required NfcTag tag,
     required BuildContext context,
   }) async {
-    Map<String, dynamic> nfcData = {
-      'nfca': tag.data['nfca'],
-      'mifareultralight': tag.data['mifareultralight'],
-      'ndef': tag.data['ndef']
-    };
+    var ndef = Ndef.from(tag);
 
-    String? decodedText;
-    if (nfcData.containsKey('ndef')) {
-      List<int> payload =
-          nfcData['ndef']['cachedMessage']?['records']?[0]['payload'] ?? [];
-
-      if (payload.isNotEmpty) {
-        decodedText = _decodeNdefText(payload);
-        _showProcess = true;
-      }
+    if (ndef == null) {
+      _message = "Tag is not readable";
+      _readContent = _message;
+      _showProcess = false;
+      notifyListeners();
+      return;
     }
 
-    _readContent = decodedText ?? "No Data Found";
-    // _message = _readContent;
-    notifyListeners();
+    try {
+      NdefMessage message = await ndef.read();
+      String decodedText = String.fromCharCodes(message.records.first.payload);
+      _readContent = decodedText;
+      _message = "Scan Successful!";
+      _showProcess = true;
+      notifyListeners();
 
-    if (decodedText != null && decodedText.isNotEmpty) {
       showModalBottomSheet(
         isDismissible: false,
         context: context,
@@ -117,12 +93,13 @@ class NFCNotifier extends ChangeNotifier {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TextFoundScreen(foundText: readContent),
+                    builder: (context) =>
+                        TextFoundScreen(foundText: _readContent),
                   ),
                 );
               },
-              message: "Make sure your device is well placed.",
-              title: "Scan Successful!",
+              message: "",
+              title: _message,
               centerContent: const ProgressIndicatorWithText(
                 progress: 1.0,
               ),
@@ -130,17 +107,9 @@ class NFCNotifier extends ChangeNotifier {
           );
         },
       );
+    } catch (e) {
+      _handleError(e);
     }
-  }
-
-  String _decodeNdefText(List<int> payload) {
-    if (payload.isEmpty) return "";
-
-    int statusByte = payload[0];
-    int languageCodeLength = statusByte & 0x1F;
-    List<int> textBytes = payload.sublist(1 + languageCodeLength);
-
-    return String.fromCharCodes(textBytes);
   }
 
   Future<void> _writeToTag({
@@ -148,38 +117,44 @@ class NFCNotifier extends ChangeNotifier {
     required String content,
     required BuildContext context,
   }) async {
-    NdefMessage message = _createNdefMessage(content: content);
-    await Ndef.from(nfcTag)?.write(message);
-    showModalBottomSheet(
-      isDismissible: false,
-      context: context,
-      builder: (context) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.4,
-          child: AppBottomsheet(
-            hasPrimaryButton: true,
-            primaryButtonText: "Continue",
-            primaryButtonOnTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeScreen(initialIndex: 0),
-                ),
-              );
-            },
-            message: "",
-            title: "Write Successful!",
-            centerContent: const ProgressIndicatorWithText(
-              progress: 1.0,
-            ),
-          ),
-        );
-      },
-    );
-  }
+    try {
+      NdefMessage message = NdefMessage([
+        NdefRecord.createText(content),
+      ]);
+      await Ndef.from(nfcTag)?.write(message);
+      _message = "Write Successful!";
+      _showProcess = true;
+      notifyListeners();
 
-  NdefMessage _createNdefMessage({required String content}) {
-    return NdefMessage([NdefRecord.createText(content)]);
+      showModalBottomSheet(
+        isDismissible: false,
+        context: context,
+        builder: (context) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: AppBottomsheet(
+              hasPrimaryButton: true,
+              primaryButtonText: "Continue",
+              primaryButtonOnTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(initialIndex: 0),
+                  ),
+                );
+              },
+              message: "",
+              title: _message,
+              centerContent: const ProgressIndicatorWithText(
+                progress: 1.0,
+              ),
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      _handleError(e);
+    }
   }
 
   void _handleError(dynamic error) {
